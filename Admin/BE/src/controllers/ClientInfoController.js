@@ -7,6 +7,7 @@ const getAClientInfoController = async (req, res, next) => {
   try {
     const _id = req.params;
     const result = await getAClientInfo(_id);
+    console.log(result);
     if (!result) {
       const error = new Error("Client Info not found!!");
       error.statusCode = 404;
@@ -24,6 +25,7 @@ const getAClientInfoController = async (req, res, next) => {
 const getAllClientInfoController = async (req, res, next) => {
   try {
     const result = await getAllClientInfo({});
+    console.log("result", result);
     if (!result) {
       const error = new Error("Client Info not found!!");
       error.statusCode = 404;

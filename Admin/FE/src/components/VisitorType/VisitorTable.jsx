@@ -17,6 +17,7 @@ export const VisitorTable = () => {
         title.toLowerCase().includes(value.toLowerCase())
       )
     );
+    e.target.reset();
   };
   return (
     <div className="mt-5">

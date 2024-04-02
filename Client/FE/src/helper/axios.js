@@ -13,11 +13,12 @@ const axiosProcessor = async ({ method, url = {}, body }) => {
   } catch (error) {
     return {
       status: error,
-      message: error.message,
+      message: error,
     };
   }
 };
 
+// get visitor type
 export const apiGetVisitors = () => {
   return axiosProcessor({
     method: "get",
@@ -25,10 +26,37 @@ export const apiGetVisitors = () => {
   });
 };
 
+// VISITOR INFO OR CLIENT INFO
+
 export const apiCreateVisitorInfo = (data) => {
   return axiosProcessor({
     method: "post",
     body: data,
     url: `${Base_URL}/client`,
+  });
+};
+
+export const apiGetVisitorInfo = () => {
+  return axiosProcessor({
+    method: "get",
+    url: `${Base_URL}/client`,
+  });
+};
+
+// send otp code
+export const apiGenerateOTP = (data) => {
+  return axiosProcessor({
+    method: "post",
+    body: data,
+    url: `${Base_URL}/client/request-otp`,
+  });
+};
+
+// verify email with otp code
+export const apiVerifyOTPCode = (data) => {
+  return axiosProcessor({
+    method: "post",
+    body: data,
+    url: `${Base_URL}/client//verify-otp`,
   });
 };

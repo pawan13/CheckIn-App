@@ -14,6 +14,7 @@ app.use(morgan("combined"));
 const { visitorTypeRouter } = require("./router/VisitorTypeRouter.js");
 const { ClientInfoRouter } = require("./router/ClientInfoRouter.js");
 const dbConnect = require("./config/mongoDB.js");
+const { verificationRouter } = require("./router/verificationRouter.js");
 
 //health check
 app.get("/health", (req, res) => {
@@ -24,6 +25,7 @@ app.get("/health", (req, res) => {
 });
 app.use("/api/v1/visitor", visitorTypeRouter);
 app.use("/api/v1/client", ClientInfoRouter);
+// app.use("/api/v1/verification", verificationRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).json({

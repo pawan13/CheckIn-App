@@ -10,6 +10,7 @@ export const NewVisitorForm = () => {
   const handleOnSubmit = (e) => {
     e.preventDefault();
     dispatch(addVisitorAction({ ...form }));
+    e.target.reset();
   };
 
   const handleOnChange = (e) => {

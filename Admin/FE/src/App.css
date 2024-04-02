@@ -40,3 +40,12 @@
 .read-the-docs {
   color: #888;
 }
+.main {
+  min-height: calc(100vh - 170px);
+  margin-left: 1rem;
+}
+
+.register {
+  max-width: 450px;
+  margin: auto;
+}

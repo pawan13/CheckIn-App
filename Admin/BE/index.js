@@ -11,9 +11,10 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("combined"));
 
-const { visitorRouter } = require("./src/router/vistorTypeRouter.js");
+const { visitorRouter } = require("./src/router/VisitorTypeRouter.js");
 const dbConnect = require("./src/config/mongoDB.js");
-const { ClientInfoRouter } = require("./src/router/clientInfoRouter.js");
+const { ClientInfoRouter } = require("./src/router/ClientInfoRouter.js");
+const { AdminRouter } = require("./src/router/AdminRouter.js");
 
 //health check
 app.get("/health", (req, res) => {
@@ -24,6 +25,7 @@ app.get("/health", (req, res) => {
 });
 app.use("/api/v1/visitor", visitorRouter);
 app.use("/api/v1/client", ClientInfoRouter);
+app.use("/api/v1/admin", AdminRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).json({

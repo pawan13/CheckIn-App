@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import VisitorReducder from "./Pages/visitorType/visitorSlice";
+import VisitorReducer from "./Pages/visitorType/VisitorSlice";
 
 export default configureStore({
   reducer: {
-    VisitorReducder: VisitorReducder,
+    VisitorReducer: VisitorReducer,
   },
 });
