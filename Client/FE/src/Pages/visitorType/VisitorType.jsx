@@ -86,6 +86,7 @@ const VisitorType = () => {
     verifyOTPAction(form.email, otp);
     //closing modal and proceed with check-in
     setShow(false);
+    setOTP("");
   };
 
   //Check Out
@@ -103,6 +104,17 @@ const VisitorType = () => {
     generateOTPCodeAction(email);
     setShow(true);
     e.target.reset();
+  };
+
+  const handleCheckOutVerifyOTP = (e) => {
+    e.preventDefault();
+    if (otp?.length < 5) {
+      return toast.error("Please enter the correct otp");
+    }
+    verifyOTPAction(email, otp);
+    //closing modal and proceed with check-in
+    setShow(false);
+    setOTP("");
   };
   return (
     <Layout>
@@ -204,7 +216,7 @@ const VisitorType = () => {
                   <Button variant="secondary" onClick={handleClose}>
                     Close
                   </Button>
-                  <Button variant="primary" onClick={handleVerifyOTP}>
+                  <Button variant="primary" onClick={handleCheckOutVerifyOTP}>
                     Verify Email
                   </Button>
                 </Modal.Footer>
