@@ -7,7 +7,7 @@ import {
   generateOTPCodeAction,
   updateVIsitorInfoAction,
   verifyOTPAction,
-} from "./VisitorAction";
+} from "./visitorAction";
 import CustomInput from "../../Components/custom-input/CustomInput";
 import { Layout } from "../../Components/Layout/Layout";
 import { Button, Form } from "react-bootstrap";
@@ -28,7 +28,7 @@ const VisitorType = () => {
 
   const [form, setForm] = useState({});
   const [visitorType, setVisitorType] = useState({});
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState({});
   const [show, setShow] = useState(false);
   const [checkInOTP, setCheckInOTP] = useState("");
   const [otp, setOTP] = useState("");
@@ -80,14 +80,21 @@ const VisitorType = () => {
     acc.push(email);
     return acc;
   }, []);
+
+  //Check In")
   const handleOnCheckIn = async (e) => {
     e.preventDefault();
+    const { email } = form;
     const lowerCaseVisitorEmails = visitorEmails.map((email) =>
       email.toLowerCase()
     );
     const result = lowerCaseVisitorEmails.includes(form.email.toLowerCase());
+    setEmail({
+      email: email,
+    });
+    // console.log("email", email);
     if (result) {
-      dispatch(
+      await dispatch(
         updateVIsitorInfoAction({
           ...form,
           ...visitorType,
@@ -96,16 +103,18 @@ const VisitorType = () => {
     } else {
       dispatch(createVisitorInfoAction({ ...form, ...visitorType }));
     }
-    generateOTPCodeAction(form.email);
+
+    await generateOTPCodeAction(email);
     setShow(true);
-    e.target.reset();
+
+    // e.target.reset();
   };
 
-  const handleVerifyOTP = () => {
+  const handleVerifyOTP = async () => {
     //OTP verification
-    console.log(form.email);
-    if (otp?.length > 0) {
-      verifyOTPAction(form.email, checkInOTP);
+    const verObj = { ...email, checkInOTP };
+    if (checkInOTP?.length > 0) {
+      await verifyOTPAction({ ...verObj });
     }
 
     //closing modal and proceed with check-in
@@ -123,14 +132,14 @@ const VisitorType = () => {
     },
   ];
 
-  const handleOncheckout = (e) => {
+  const handleOncheckout = async (e) => {
     e.preventDefault();
     const lowerCaseVisitorEmails = visitorEmails.map((email) =>
       email.toLowerCase()
     );
     const result = lowerCaseVisitorEmails.includes(email.toLowerCase());
     if (result) {
-      generateOTPCodeAction(email);
+      await generateOTPCodeAction(email);
       setShow(true);
     } else {
       toast.error("you must checkin to checkout");
@@ -140,53 +149,73 @@ const VisitorType = () => {
     e.target.reset();
   };
 
-  const handleCheckOutVerifyOTP = (e) => {
-    e.preventDefault();
-    if (otp?.length < 5) {
-      toast.error("Please enter the correct otp");
-      setShow(false);
-      return;
-    }
-
-    verifyOTPAction(email, otp);
-    //closing modal and proceed with check-in
-    setShow(false);
-    setOTP("");
-  };
+  const handleCheckOutVerifyOTP = (e) => {};
+  // ///handlin on verifying checkout
+  // const handleCheckOutVerifyOTP = async (e) => {
+  //   e.preventDefault();
+  //   if (otp?.length < 5) {
+  //     toast.error("Please enter the correct otp");
+  //     setShow(false);
+  //     return;
+  //   }
+  //   const veriObj = { ...email, otp };
+  //   // await verifyOTPAction(veriObj);
+  //   //closing modal and proceed with check-in
+  //   setShow(false);
+  //   setOTP("");
+  // };
   return (
     <Layout>
       <Tabs
-        defaultActiveKey="checkIn"
-        id="uncontrolled-tab-example"
-        className="mb-3"
+        defaultActiveKey='checkIn'
+        id='uncontrolled-tab-example'
+        className='mb-3'
       >
-        <Tab eventKey="checkIn" title="Check In ">
-          <div className="admin-form border p-3 shadow-lg rounded">
+        {/* check In tab  */}
+        <Tab
+          eventKey='checkIn'
+          title='Check In '
+        >
+          <div className='admin-form border p-3 shadow-lg rounded'>
             <Form onSubmit={handleOnCheckIn}>
               <h1> Check In </h1>
               <hr />
               {inputs.map((item, i) => (
-                <CustomInput key={i} {...item} onChange={handleOnChange} />
+                <CustomInput
+                  key={i}
+                  {...item}
+                  onChange={handleOnChange}
+                />
               ))}
               <Form.Group>
                 <Form.Select
-                  name="visitorType"
+                  name='visitorType'
                   onChange={handleVisitorTypeChange}
                 >
                   <option>Select One</option>
                   {visitorTypeList.map((item, i) => (
-                    <option key={i} value={item.title}>
+                    <option
+                      key={i}
+                      value={item.title}
+                    >
                       {item.title}
                     </option>
                   ))}
                 </Form.Select>
               </Form.Group>
-              <p className="d-grid mt-3">
-                <Button variant="primary" type="submit">
+              <p className='d-grid mt-3'>
+                <Button
+                  variant='primary'
+                  type='submit'
+                >
                   CheckIn
                 </Button>
               </p>
-              <Modal show={show} onHide={handleCloseCheckIn}>
+
+              <Modal
+                show={show}
+                onHide={handleCloseCheckIn}
+              >
                 <Modal.Header closeButton>
                   <Modal.Title>Verify the Email</Modal.Title>
                 </Modal.Header>
@@ -195,29 +224,38 @@ const VisitorType = () => {
                     <Form.Group>
                       <Form.Label>OTP</Form.Label>
                       <Form.Control
-                        type="text"
-                        placeholder="Enter OTP"
+                        type='text'
+                        placeholder='Enter OTP'
                         value={checkInOTP}
                         onChange={(e) => setCheckInOTP(e.target.value)}
                         required
                       />
                     </Form.Group>
+                    <Button
+                      variant='secondary'
+                      onClick={handleCloseCheckIn}
+                    >
+                      Close
+                    </Button>
+                    <Button
+                      variant='primary'
+                      onClick={handleVerifyOTP}
+                    >
+                      Verify Email check In
+                    </Button>
                   </Form>
                 </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={handleCloseCheckIn}>
-                    Close
-                  </Button>
-                  <Button variant="primary" onClick={handleVerifyOTP}>
-                    Verify Email
-                  </Button>
-                </Modal.Footer>
               </Modal>
             </Form>
           </div>
         </Tab>
-        <Tab eventKey="checkOut" title="Check Out">
-          <div className="admin-form border p-3 shadow-lg rounded">
+
+        {/* Check Out tab  */}
+        <Tab
+          eventKey='checkOut'
+          title='Check Out'
+        >
+          <div className='admin-form border p-3 shadow-lg rounded'>
             <Form onSubmit={handleOncheckout}>
               <h1>Check Out </h1>
               <hr />
@@ -228,12 +266,18 @@ const VisitorType = () => {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               ))}
-              <p className="d-grid mt-3">
-                <Button variant="primary" type="submit">
+              <p className='d-grid mt-3'>
+                <Button
+                  variant='primary'
+                  type='submit'
+                >
                   CheckOut
                 </Button>
               </p>
-              <Modal show={show} onHide={handleCloseCheckOut}>
+              <Modal
+                show={show}
+                onHide={handleCloseCheckOut}
+              >
                 <Modal.Header closeButton>
                   <Modal.Title>Verify the Email</Modal.Title>
                 </Modal.Header>
@@ -241,22 +285,15 @@ const VisitorType = () => {
                   <Form.Group>
                     <Form.Label>OTP</Form.Label>
                     <Form.Control
-                      type="text"
-                      placeholder="Enter OTP"
+                      type='text'
+                      placeholder='Enter OTP'
                       value={otp}
                       onChange={(e) => setOTP(e.target.value)}
                       required
                     />
                   </Form.Group>
                 </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={handleCloseCheckOut}>
-                    Close
-                  </Button>
-                  <Button variant="primary" onClick={handleCheckOutVerifyOTP}>
-                    Verify Email
-                  </Button>
-                </Modal.Footer>
+                <Modal.Footer></Modal.Footer>
               </Modal>
             </Form>
           </div>

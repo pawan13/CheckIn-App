@@ -7,7 +7,7 @@ import {
   apiVerifyOTPCode,
 } from "../../helper/axios";
 import { toast } from "react-toastify";
-import { setVisitorInfoList, setVisitorTypeList } from "./VisitorSlice";
+import { setVisitorInfoList, setVisitorTypeList } from "./visitorSlice";
 
 export const fetchAllVisitorAction = () => async (dispatch) => {
   try {
@@ -67,9 +67,14 @@ export const generateOTPCodeAction = async (email) => {
   }
 };
 
-export const verifyOTPAction = async (email, otp) => {
+export const verifyOTPAction = async (obj) => {
   try {
-    const { status, message } = await apiVerifyOTPCode({ email, otp });
+    console.log("first", obj);
+    if (!email || !otp) {
+      toast.error("Please enter email and OTP");
+      return;
+    }
+    const { status, message } = await apiVerifyOTPCode(email, otp);
     if (status === "SUCCESS") {
       toast.success("Thanks for checking In");
     }
