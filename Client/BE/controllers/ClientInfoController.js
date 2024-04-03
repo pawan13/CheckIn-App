@@ -83,7 +83,7 @@ const generateOTP = async (req, res, next) => {
     }
     return res.status(500).json({
       status: "ERROR",
-      message: `Something went wrong `,
+      message: `Something went wrong`,
     });
   } catch (error) {
     next(error);
@@ -102,7 +102,7 @@ const verifyOTP = async (req, res, next) => {
         const currentTime = new Date();
         const creationTime = session.createdAt;
         const timeDifference = currentTime - creationTime;
-        if (timeDifference <= 30000) {
+        if (timeDifference <= 300000) {
           // 300000 milliseconds = 5 minutes
           // If OTP is valid and not expired
           return res.json({

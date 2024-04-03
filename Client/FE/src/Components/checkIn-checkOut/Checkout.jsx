@@ -4,6 +4,10 @@ import { useSelector } from "react-redux";
 import CustomInput from "../custom-input/CustomInput";
 import { Button, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
+import {
+  generateOTPCodeAction,
+  verifyOTPCheckOutAction,
+} from "../../Pages/visitorType/VisitorAction";
 
 export const CheckOut = () => {
   const { visitorInfoList } = useSelector((state) => state.VisitorReducer);
@@ -22,6 +26,12 @@ export const CheckOut = () => {
       required: true,
     },
   ];
+  const visitorEmails = visitorInfoList.reduce((acc, visitor) => {
+    // Destructure each visitor object
+    const { email, ...rest } = visitor;
+    acc.push(email);
+    return acc;
+  }, []);
 
   const handleOncheckout = (e) => {
     e.preventDefault();
@@ -44,13 +54,12 @@ export const CheckOut = () => {
   const handleCheckOutVerifyOTP = (e) => {
     e.preventDefault();
     // Handle OTP verification for check-out
-    if (otp?.length < 5) {
-      toast.error("Please enter the correct otp");
-      setShow(false);
-      return;
+    if (otp?.length > 0) {
+      verifyOTPCheckOutAction(email, otp);
+    } else {
+      toast.error("OTP must be five didgits");
     }
 
-    verifyOTPAction(email, otp);
     setShow(false);
     setOTP("");
   };

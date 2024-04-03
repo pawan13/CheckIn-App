@@ -44,14 +44,15 @@ export const fetchAllVisitorInfoAction = () => async (dispatch) => {
   }
 };
 
-export const updateVIsitorInfoAction = async (data) => {
+export const updateVIsitorInfoAction = (data) => async (dispatch) => {
   try {
-    const { status } = await apiUpdateVisitorInfo(data);
+    const { status, message } = await apiUpdateVisitorInfo(data);
     if (status === "SUCCESS") {
       toast.success("Please verify the email with OTP");
+    } else {
+      return toast.error(message);
     }
   } catch (error) {
-    toast.error(error.message);
     console.log(error.message);
   }
 };
@@ -69,7 +70,8 @@ export const generateOTPCodeAction = async (email) => {
 
 export const verifyOTPAction = async (email, otp) => {
   try {
-    const { status, message } = await apiVerifyOTPCode({ email, otp });
+    console.log(email, otp);
+    const { status, message } = await apiVerifyOTPCode(email, otp);
     if (status === "SUCCESS") {
       toast.success("Thanks for checking In");
     }
@@ -78,13 +80,14 @@ export const verifyOTPAction = async (email, otp) => {
   }
 };
 
-// export const verifyOTPCheckOutAction = async (email, otp) => {
-//   try {
-//     const { status, message } = await apiVerifyOTPCode({ email, otp });
-//     if (status === "SUCCESS") {
-//       toast.success("Thanks for checking out");
-//     }
-//   } catch (error) {
-//     toast.error(error.message);
-//   }
-// };
+export const verifyOTPCheckOutAction = async (email, otp) => {
+  try {
+    console.log(email, otp);
+    const { status, message } = await apiVerifyOTPCode(email, otp);
+    if (status === "SUCCESS") {
+      toast.success("Thanks for checking Out");
+    }
+  } catch (error) {
+    toast.error(error.message);
+  }
+};

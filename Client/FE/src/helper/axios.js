@@ -45,7 +45,7 @@ export const apiGetVisitorInfo = () => {
 
 export const apiUpdateVisitorInfo = (data) => {
   return axiosProcessor({
-    method: "put",
+    method: "post",
     body: data,
     url: `${Base_URL}/client/update`,
   });
@@ -61,10 +61,10 @@ export const apiGenerateOTP = (data) => {
 };
 
 // verify email with otp code
-export const apiVerifyOTPCode = (data) => {
+export const apiVerifyOTPCode = (email, otp) => {
   return axiosProcessor({
     method: "post",
-    body: data,
+    body: { email, otp },
     url: `${Base_URL}/client/verify-otp`,
   });
 };

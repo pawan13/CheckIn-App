@@ -24,7 +24,7 @@ export const CheckIn = () => {
 
   const [form, setForm] = useState({});
   const [visitorType, setVisitorType] = useState({});
-  const [checkInOTP, setCheckInOTP] = useState("");
+  const [otp, setOTP] = useState("");
   const [show, setShow] = useState(false);
 
   const handleCloseCheckIn = () => setShow(false);
@@ -67,9 +67,10 @@ export const CheckIn = () => {
       [name]: value,
     });
   };
+
   const visitorEmails = visitorInfoList.reduce((acc, visitor) => {
     // Destructure each visitor object
-    const { email, ...rest } = visitor;
+    const { email, _id, ...rest } = visitor;
     acc.push(email);
     return acc;
   }, []);
@@ -81,12 +82,8 @@ export const CheckIn = () => {
     );
     const result = lowerCaseVisitorEmails.includes(form.email.toLowerCase());
     if (result) {
-      dispatch(
-        updateVIsitorInfoAction({
-          ...form,
-          ...visitorType,
-        })
-      );
+      const data = { ...form, ...visitorType };
+      dispatch(updateVIsitorInfoAction(data));
     } else {
       dispatch(createVisitorInfoAction({ ...form, ...visitorType }));
     }
@@ -96,8 +93,9 @@ export const CheckIn = () => {
   };
 
   const handleVerifyOTP = () => {
+    console.log(form.email, otp);
     if (otp?.length > 0) {
-      verifyOTPAction(form.email, checkInOTP);
+      verifyOTPAction(form.email, otp);
     } else {
       toast.error("You must fill the OTP");
     }
@@ -132,18 +130,16 @@ export const CheckIn = () => {
             <Modal.Title>Verify the Email</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
-              <Form.Group>
-                <Form.Label>OTP</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter OTP"
-                  value={checkInOTP}
-                  onChange={(e) => setCheckInOTP(e.target.value)}
-                  required
-                />
-              </Form.Group>
-            </Form>
+            <Form.Group>
+              <Form.Label>OTP</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter OTP"
+                value={otp}
+                onChange={(e) => setOTP(e.target.value)}
+                required
+              />
+            </Form.Group>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleCloseCheckIn}>
