@@ -13,8 +13,22 @@ const VisitorType = () => {
   }, [dispatch]);
   return (
     <>
-      <Button variant="primary" type="submit">
-        <Link to="/clientInfo">ClientInfo</Link>
+      <Button
+        variant="primary"
+        type="submit"
+        style={{
+          borderRadius: "8px",
+          padding: "10px 20px",
+          backgroundColor: "#007bff",
+          borderColor: "#007bff",
+        }}
+      >
+        <Link
+          to="/clientInfo"
+          style={{ color: "#fff", textDecoration: "none", fontWeight: "bold" }}
+        >
+          Client Info
+        </Link>
       </Button>
       <NewVisitorForm />
       <VisitorTable />

@@ -3,6 +3,7 @@ import {
   apiGenerateOTP,
   apiGetVisitorInfo,
   apiGetVisitors,
+  apiUpdateVisitorInfo,
   apiVerifyOTPCode,
 } from "../../helper/axios";
 import { toast } from "react-toastify";
@@ -23,12 +24,9 @@ export const fetchAllVisitorAction = () => async (dispatch) => {
 //VisitorInfo or ClientInfo
 export const createVisitorInfoAction = (data) => async (dispatch) => {
   try {
-    const { status } = await apiCreateVisitorInfo(data);
-    dispatch(fetchAllVisitorInfoAction());
+    const { status, message } = await apiCreateVisitorInfo(data);
     if (status === "SUCCESS") {
       toast.success("Please verify the email with OTP");
-    } else {
-      toast.error("Please check and fill the correct details");
     }
   } catch (error) {
     toast.error(error.message);
@@ -42,22 +40,30 @@ export const fetchAllVisitorInfoAction = () => async (dispatch) => {
       dispatch(setVisitorInfoList(result));
     }
   } catch (error) {
-    toast.error(error);
+    toast.error(error.message);
   }
 };
 
+export const updateVIsitorInfoAction = async (data) => {
+  try {
+    const { status } = await apiUpdateVisitorInfo(data);
+    if (status === "SUCCESS") {
+      toast.success("Please verify the email with OTP");
+    }
+  } catch (error) {
+    toast.error(error.message);
+    console.log(error.message);
+  }
+};
 // Generate the OTP
 export const generateOTPCodeAction = async (email) => {
   try {
-    console.log("email", email);
     const { status } = await apiGenerateOTP({ email });
     if (status === "SUCCESS") {
       toast.success("Please check your email for OTP");
-    } else if (status.message === "Request failed with status code 500") {
-      toast.error("You need to check in first to checkout");
     }
   } catch (error) {
-    toast.error(error);
+    toast.error(error.message);
   }
 };
 
@@ -65,11 +71,20 @@ export const verifyOTPAction = async (email, otp) => {
   try {
     const { status, message } = await apiVerifyOTPCode({ email, otp });
     if (status === "SUCCESS") {
-      toast.success("Thanks for checking In or out");
-    } else if (status.message === "Request failed with status code 400") {
-      toast.error("Your otp didn't match with the otp sent to your email");
+      toast.success("Thanks for checking In");
     }
   } catch (error) {
-    toast.error(error);
+    toast.error(error.message);
   }
 };
+
+// export const verifyOTPCheckOutAction = async (email, otp) => {
+//   try {
+//     const { status, message } = await apiVerifyOTPCode({ email, otp });
+//     if (status === "SUCCESS") {
+//       toast.success("Thanks for checking out");
+//     }
+//   } catch (error) {
+//     toast.error(error.message);
+//   }
+// };

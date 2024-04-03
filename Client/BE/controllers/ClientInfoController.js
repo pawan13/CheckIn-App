@@ -2,6 +2,7 @@ const {
   createClientInfo,
   getAClientInfo,
   getAllClientInfo,
+  updateClientInfo,
 } = require("../model/ClientInfoModel");
 const {
   createSession,
@@ -32,6 +33,21 @@ const getAllClientInfoController = async (req, res, next) => {
       error.statusCode = 404;
       return next(error);
     }
+    res.json({
+      status: "SUCCESS",
+      result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateClientInfoController = async (req, res, next) => {
+  try {
+    console.log("Checking ....");
+    const { email } = req.body;
+    console.log({ email, ...req.body });
+    const result = await updateClientInfo({ email }, req.body);
     res.json({
       status: "SUCCESS",
       result,
@@ -122,6 +138,7 @@ const verifyOTP = async (req, res, next) => {
 module.exports = {
   createClientInfoController,
   getAllClientInfoController,
+  updateClientInfoController,
   generateOTP,
   verifyOTP,
 };

@@ -43,6 +43,14 @@ export const apiGetVisitorInfo = () => {
   });
 };
 
+export const apiUpdateVisitorInfo = (data) => {
+  return axiosProcessor({
+    method: "put",
+    body: data,
+    url: `${Base_URL}/client/update`,
+  });
+};
+
 // send otp code
 export const apiGenerateOTP = (data) => {
   return axiosProcessor({
@@ -57,6 +65,6 @@ export const apiVerifyOTPCode = (data) => {
   return axiosProcessor({
     method: "post",
     body: data,
-    url: `${Base_URL}/client//verify-otp`,
+    url: `${Base_URL}/client/verify-otp`,
   });
 };

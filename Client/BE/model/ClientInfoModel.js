@@ -28,9 +28,12 @@ const ClientInfo = mongoose.model("ClientInfo", ClientInfoSchema);
 const createClientInfo = (ClientObj) => ClientInfo.create(ClientObj);
 const getAClientInfo = (filter) => ClientInfo.findOne(filter);
 const getAllClientInfo = (filter) => ClientInfo.find(filter);
+const updateClientInfo = (filter, updateObj) =>
+  ClientInfo.findOneAndReplace(filter, updateObj);
 
 module.exports = {
   createClientInfo,
   getAllClientInfo,
   getAClientInfo,
+  updateClientInfo,
 };
