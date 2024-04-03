@@ -1,10 +1,9 @@
 // CheckOut.js
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import CustomInput from "../../Components/custom-input/CustomInput";
+import CustomInput from "../custom-input/CustomInput";
 import { Button, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { generateOTPCodeAction, verifyOTPAction } from "../../Pages/visitorType/VisitorAction";
 
 export const CheckOut = () => {
   const { visitorInfoList } = useSelector((state) => state.VisitorReducer);
@@ -38,7 +37,7 @@ export const CheckOut = () => {
       setShow(false);
     }
 
-    setShow(true);
+    // Remove this line: setShow(true);
     e.target.reset();
   };
 
