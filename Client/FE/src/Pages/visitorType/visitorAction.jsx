@@ -59,15 +59,16 @@ export const replaceVIsitorInfoAction = (data) => async (dispatch) => {
   }
 };
 
-export const updateVisitorCheckOutInfoAction = async (email, checkout) => {
+export const updateVisitorCheckOutInfoAction = async (email, checkOut) => {
   try {
+    console.log("inAction", email, checkOut);
     const { status, message } = await apiUpdateVisitorCheckOutInfo(
       email,
-      checkout
+      checkOut
     );
     console.log(status);
     if (status === "SUCCESS") {
-      toast.success("Please verify the email with OTP");
+      toast.success("Thanks for checking out!!");
     } else {
       return toast.error(message);
     }
@@ -113,18 +114,6 @@ export const verifyOTPAction = async (email, otp) => {
     const { status, message } = await apiVerifyOTPCode(email, otp);
     if (status === "SUCCESS") {
       toast.success("Thanks for checking In");
-    }
-  } catch (error) {
-    toast.error(error.message);
-  }
-};
-
-export const verifyOTPCheckOutAction = async (email, otp) => {
-  try {
-    console.log(email, otp);
-    const { status, message } = await apiVerifyOTPCode(email, otp);
-    if (status === "SUCCESS") {
-      toast.success("Thanks for checking Out");
     }
   } catch (error) {
     toast.error(error.message);

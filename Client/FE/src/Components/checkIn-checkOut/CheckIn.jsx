@@ -100,7 +100,7 @@ export const CheckIn = () => {
     } else {
       toast.error("You must fill the OTP");
     }
-    await updateVisitorEmailVerifiedInfoAction(form.email, "true");
+    await updateVisitorEmailVerifiedInfoAction(form.email, "Verified");
     setShow(false);
   };
 
@@ -123,7 +123,7 @@ export const CheckIn = () => {
           </Form.Select>
         </Form.Group>
         <p className="d-grid mt-3">
-          <Button variant="primary" type="submit">
+          <Button disabled={show} variant="primary" type="submit">
             CheckIn
           </Button>
         </p>
