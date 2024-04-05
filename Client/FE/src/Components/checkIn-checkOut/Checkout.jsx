@@ -6,6 +6,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import {
   generateOTPCodeAction,
+  updateVisitorCheckOutInfoAction,
   verifyOTPCheckOutAction,
 } from "../../Pages/visitorType/VisitorAction";
 
@@ -33,33 +34,31 @@ export const CheckOut = () => {
     return acc;
   }, []);
 
-  const handleOncheckout = (e) => {
+  const handleOncheckout = async (e) => {
     e.preventDefault();
     const lowerCaseVisitorEmails = visitorEmails.map((email) =>
       email.toLowerCase()
     );
     const result = lowerCaseVisitorEmails.includes(email.toLowerCase());
     if (result) {
-      generateOTPCodeAction(email);
+      await generateOTPCodeAction(email);
+      await updateVisitorCheckOutInfoAction(email, "true");
       setShow(true);
     } else {
       toast.error("you must checkin to checkout");
       setShow(false);
     }
-
-    // Remove this line: setShow(true);
     e.target.reset();
   };
 
-  const handleCheckOutVerifyOTP = (e) => {
+  const handleCheckOutVerifyOTP = async (e) => {
     e.preventDefault();
     // Handle OTP verification for check-out
     if (otp?.length > 0) {
-      verifyOTPCheckOutAction(email, otp);
+      await verifyOTPCheckOutAction(email, otp);
     } else {
-      toast.error("OTP must be five didgits");
+      toast.error("OTP must be five digits");
     }
-
     setShow(false);
     setOTP("");
   };
@@ -77,7 +76,7 @@ export const CheckOut = () => {
           />
         ))}
         <p className="d-grid mt-3">
-          <Button variant="primary" type="submit">
+          <Button disabled={show} variant="primary" type="submit">
             CheckOut
           </Button>
         </p>

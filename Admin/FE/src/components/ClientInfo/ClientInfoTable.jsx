@@ -30,6 +30,8 @@ export const ClientInfoTable = () => {
             <th> Full Name</th>
             <th>Email</th>
             <th>Mobile</th>
+            <th>VisitorType</th>
+            <th>EmailVerified</th>
             <th>checked In </th>
             <th>Checked Out</th>
           </tr>
@@ -41,8 +43,10 @@ export const ClientInfoTable = () => {
               <td>{item.fullName}</td>
               <td>{item.email}</td>
               <td>{item.mobile}</td>
-              <td>{item.createdAt}</td>
-              <td>{item.updatedAt}</td>
+              <td>{item.visitorType}</td>
+              <td>{item.isVerified}</td>
+              <td>{new Date(item.createdAt).toLocaleString()}</td>
+              <td>{item.checkedOut}</td>
             </tr>
           ))}
         </tbody>

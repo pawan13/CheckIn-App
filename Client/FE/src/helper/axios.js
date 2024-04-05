@@ -43,14 +43,31 @@ export const apiGetVisitorInfo = () => {
   });
 };
 
-export const apiUpdateVisitorInfo = (data) => {
+export const apiReplaceVisitorInfo = (data) => {
   return axiosProcessor({
     method: "post",
     body: data,
-    url: `${Base_URL}/client/update`,
+    url: `${Base_URL}/client/replace`,
   });
 };
 
+export const apiUpdateVisitorCheckOutInfo = (email, checkedOut) => {
+  console.log(email, checkedOut);
+  return axiosProcessor({
+    method: "patch",
+    body: { email, checkedOut },
+    url: `${Base_URL}/client/updateCheckout`,
+  });
+};
+
+export const apiUpdateVisitorEmailverifyInfo = (email, isVerified) => {
+  console.log(email, isVerified);
+  return axiosProcessor({
+    method: "patch",
+    body: { email, isVerified },
+    url: `${Base_URL}/client/updateEmailVerified`,
+  });
+};
 // send otp code
 export const apiGenerateOTP = (data) => {
   return axiosProcessor({

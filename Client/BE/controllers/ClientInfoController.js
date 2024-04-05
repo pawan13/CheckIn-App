@@ -3,11 +3,11 @@ const {
   getAClientInfo,
   getAllClientInfo,
   updateClientInfo,
+  replaceClientInfo,
 } = require("../model/ClientInfoModel");
 const {
   createSession,
   getSession,
-  deleteSession,
   deleteSessionByFilter,
 } = require("../model/SessionModel");
 const { sendOTPEmail } = require("../service/nodemailer");
@@ -42,12 +42,43 @@ const getAllClientInfoController = async (req, res, next) => {
   }
 };
 
-const updateClientInfoController = async (req, res, next) => {
+const replaceClientInfoController = async (req, res, next) => {
   try {
     console.log("Checking ....");
     const { email } = req.body;
     console.log({ email, ...req.body });
-    const result = await updateClientInfo({ email }, req.body);
+    const result = await replaceClientInfo({ email }, req.body);
+    res.json({
+      status: "SUCCESS",
+      result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateClientCheckOutInfoController = async (req, res, next) => {
+  try {
+    console.log("Checking update....");
+    const { email, checkedOut } = req.body;
+    console.log({ email, checkedOut });
+    const result = await updateClientInfo({ email }, { checkedOut });
+
+    res.json({
+      status: "SUCCESS",
+      result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateClientEmailVerifiedInfoController = async (req, res, next) => {
+  try {
+    console.log("Checking update....");
+    const { email, isVerified } = req.body;
+    const result = await updateClientInfo({ email }, { isVerified });
+
     res.json({
       status: "SUCCESS",
       result,
@@ -138,7 +169,9 @@ const verifyOTP = async (req, res, next) => {
 module.exports = {
   createClientInfoController,
   getAllClientInfoController,
-  updateClientInfoController,
+  replaceClientInfoController,
+  updateClientCheckOutInfoController,
+  updateClientEmailVerifiedInfoController,
   generateOTP,
   verifyOTP,
 };

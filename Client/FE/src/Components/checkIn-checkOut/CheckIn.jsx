@@ -6,7 +6,8 @@ import {
   fetchAllVisitorAction,
   fetchAllVisitorInfoAction,
   generateOTPCodeAction,
-  updateVIsitorInfoAction,
+  replaceVIsitorInfoAction,
+  updateVisitorEmailVerifiedInfoAction,
   verifyOTPAction,
 } from "../../Pages/visitorType/VisitorAction";
 import CustomInput from "../custom-input/CustomInput";
@@ -83,22 +84,23 @@ export const CheckIn = () => {
     const result = lowerCaseVisitorEmails.includes(form.email.toLowerCase());
     if (result) {
       const data = { ...form, ...visitorType };
-      dispatch(updateVIsitorInfoAction(data));
+      dispatch(replaceVIsitorInfoAction(data));
     } else {
       dispatch(createVisitorInfoAction({ ...form, ...visitorType }));
     }
-    generateOTPCodeAction(form.email);
+    await generateOTPCodeAction(form.email);
     setShow(true);
     e.target.reset();
   };
 
-  const handleVerifyOTP = () => {
+  const handleVerifyOTP = async () => {
     console.log(form.email, otp);
     if (otp?.length > 0) {
-      verifyOTPAction(form.email, otp);
+      await verifyOTPAction(form.email, otp);
     } else {
       toast.error("You must fill the OTP");
     }
+    await updateVisitorEmailVerifiedInfoAction(form.email, "true");
     setShow(false);
   };
 

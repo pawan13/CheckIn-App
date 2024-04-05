@@ -20,6 +20,14 @@ const ClientInfoSchema = new mongoose.Schema(
       enum: ["Buyer", "Visitor", "Entrepreneur"],
       required: true,
     },
+    checkedOut: {
+      type: String,
+      default: "Not yet",
+    },
+    isVerified: {
+      type: String,
+      default: "Not Verified",
+    },
   },
   { timestamps: true }
 );
@@ -28,12 +36,15 @@ const ClientInfo = mongoose.model("ClientInfo", ClientInfoSchema);
 const createClientInfo = (ClientObj) => ClientInfo.create(ClientObj);
 const getAClientInfo = (filter) => ClientInfo.findOne(filter);
 const getAllClientInfo = (filter) => ClientInfo.find(filter);
-const updateClientInfo = (filter, updateObj) =>
+const replaceClientInfo = (filter, updateObj) =>
   ClientInfo.findOneAndReplace(filter, updateObj);
+const updateClientInfo = (filter, updateObj) =>
+  ClientInfo.findOneAndUpdate(filter, updateObj);
 
 module.exports = {
   createClientInfo,
   getAllClientInfo,
   getAClientInfo,
+  replaceClientInfo,
   updateClientInfo,
 };

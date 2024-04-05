@@ -20,6 +20,14 @@ const ClientInfoSchema = new mongoose.Schema(
       enum: ["Buyer", "Visitor", "Entrepreneur"],
       required: true,
     },
+    checkedOut: {
+      type: String,
+      default: "Not yet",
+    },
+    isVerified: {
+      type: String,
+      default: "Not Verified",
+    },
   },
   { timestamps: true }
 );
