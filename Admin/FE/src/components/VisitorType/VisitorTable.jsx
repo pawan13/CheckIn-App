@@ -24,7 +24,7 @@ export const VisitorTable = () => {
       <div className="w-25 mb-3">
         <Form.Control onChange={handleOnSearch} placeholder="Search by name" />
       </div>
-      <Table striped bordered hover>
+      <Table striped bordered hover className="w-80">
         <thead>
           <tr>
             <th>#</th>

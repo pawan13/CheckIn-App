@@ -1,6 +1,6 @@
 // CheckOut.js
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import CustomInput from "../custom-input/CustomInput";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";

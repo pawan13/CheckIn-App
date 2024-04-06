@@ -3,33 +3,38 @@ import { setAdmin } from "./AdminSlice";
 import {
   apiGetAdminInfo,
   apiLogInUser,
+  apiLogOutUser,
   apiRegisterAdmin,
 } from "../../helper/axios";
+import { toast } from "react-toastify";
 
 export const createAdminAuth = async (obj) => {
   try {
     const { status, message } = await apiRegisterAdmin(obj);
-    console.log(status);
+    if (status === "error") {
+      toast.error("something went wrong!!");
+    }
   } catch (error) {
     console.log("I am error");
-    // toast.error(error.message);
+    return toast.error(error.message);
   }
 };
 
 export const loginAdminUser = (obj) => async (dispatch) => {
   try {
-    const { status, message, token } = await apiLogInUser(obj);
-    console.log(status, message, token);
-    // alert(message);
+    const { status, token } = await apiLogInUser(obj);
+    console.log(status);
     if (status === "SUCCESS") {
-      // We will get token, what to do with it?
+      // We will get token
       localStorage.setItem("accessJWT", token.accessJWT);
       localStorage.setItem("refreshJWT", token.refreshJWT);
       dispatch(getAdminInfo());
+    } else if (status === "error") {
+      toast.error("Email or password didn't match");
     }
   } catch (error) {
-    // toast.error(error.message);
-    console.log(error.message);
+    console.log(error);
+    return toast.error(error);
   }
 };
 
@@ -40,7 +45,20 @@ export const getAdminInfo = () => async (dispatch) => {
       dispatch(setAdmin(admin));
     }
   } catch (error) {
-    // toast.error(error.message);
+    toast.error(error.message);
     console.log(error);
+  }
+};
+
+export const logOutAdminUserAction = () => (dispatch) => {
+  try {
+    console.log("logout");
+    apiLogOutUser();
+    sessionStorage.removeItem("accessJWT");
+    sessionStorage.removeItem("refreshJWT");
+    dispatch(setAdmin({}));
+  } catch (error) {
+    toast.error(error.message);
+    console.error("Logout error:", error);
   }
 };

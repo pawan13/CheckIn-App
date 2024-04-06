@@ -79,7 +79,7 @@ export const apiLogOutUser = () => async (dispatch) => {
   const accessJWT = localStorage.getItem("accessJWT");
   const refreshJWT = localStorage.getItem("refreshJWT");
   sessionStorage.removeItem("accessJWT");
-  localStorage.removeItem("refreshJWT");
+  sessionStorage.removeItem("refreshJWT");
   await axiosProcessor({
     method: "post",
     body: {

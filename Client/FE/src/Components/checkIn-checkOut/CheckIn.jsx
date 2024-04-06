@@ -1,5 +1,5 @@
 // CheckIn.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createVisitorInfoAction,
@@ -13,6 +13,7 @@ import {
 import CustomInput from "../custom-input/CustomInput";
 import { Button, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export const CheckIn = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,8 @@ export const CheckIn = () => {
   const [visitorType, setVisitorType] = useState({});
   const [otp, setOTP] = useState("");
   const [show, setShow] = useState(false);
+  const [allowPromotion, setAllowPromotion] = useState(true);
+  const recaptchaRef = useRef();
 
   const handleCloseCheckIn = () => setShow(false);
 
@@ -48,7 +51,7 @@ export const CheckIn = () => {
       name: "mobile",
       type: "number",
       placeholder: "+614xxxxxxxx",
-      required: false,
+      required: true,
       minLength: 10,
     },
   ];
@@ -69,6 +72,9 @@ export const CheckIn = () => {
     });
   };
 
+  const handlePromotiomPermission = (e) => {
+    setAllowPromotion(!allowPromotion);
+  };
   const visitorEmails = visitorInfoList.reduce((acc, visitor) => {
     // Destructure each visitor object
     const { email, _id, ...rest } = visitor;
@@ -77,16 +83,27 @@ export const CheckIn = () => {
   }, []);
   const handleOnCheckIn = async (e) => {
     e.preventDefault();
+    // Recaptcha logic
+
+    const token = await recaptchaRef.current.executeAsync();
+    recaptchaRef.current.reset();
     // Handle check-in logic
     const lowerCaseVisitorEmails = visitorEmails.map((email) =>
       email.toLowerCase()
     );
     const result = lowerCaseVisitorEmails.includes(form.email.toLowerCase());
     if (result) {
-      const data = { ...form, ...visitorType };
+      const data = { ...form, ...visitorType, allowPromotion, token };
       dispatch(replaceVIsitorInfoAction(data));
     } else {
-      dispatch(createVisitorInfoAction({ ...form, ...visitorType }));
+      dispatch(
+        createVisitorInfoAction({
+          ...form,
+          ...visitorType,
+          allowPromotion,
+          token,
+        })
+      );
     }
     await generateOTPCodeAction(form.email);
     setShow(true);
@@ -106,7 +123,7 @@ export const CheckIn = () => {
 
   return (
     <div className="admin-form border p-3 shadow-lg rounded">
-      <Form onSubmit={handleOnCheckIn}>
+      <Form onSubmit={handleOnCheckIn} disabled={show}>
         <h1> Check In </h1>
         <hr />
         {inputs.map((item, i) => (
@@ -114,14 +131,26 @@ export const CheckIn = () => {
         ))}
         <Form.Group>
           <Form.Select name="visitorType" onChange={handleVisitorTypeChange}>
-            <option>Select One</option>
             {visitorTypeList.map((item, i) => (
               <option key={i} value={item.title}>
                 {item.title}
               </option>
             ))}
           </Form.Select>
+          <Form.Check
+            name="allowPromotion"
+            onChange={handlePromotiomPermission}
+            type="checkbox"
+            label="Allow Made In Nepal expo to send email for promotion"
+            id={`promotionCheckbox`}
+            defaultChecked
+          />
         </Form.Group>
+        <ReCAPTCHA
+          ref={recaptchaRef}
+          size="invisible"
+          sitekey="6LcNUrIpAAAAAB_-jxfDH4inXDzpFf8O7v-6ct4q"
+        />
         <p className="d-grid mt-3">
           <Button disabled={show} variant="primary" type="submit">
             CheckIn

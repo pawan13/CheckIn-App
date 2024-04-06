@@ -5,7 +5,8 @@ import VisitorType from "./Pages/VisitorType/VisitorType.jsx";
 import Signup from "./Pages/signup-signin/SignUp";
 import SignIn from "./Pages/signup-signin/SignIn";
 import { PrivateRoute } from "./components/private-route/PrivateRoute";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <>
@@ -29,6 +30,7 @@ function App() {
           }
         />
       </Routes>
+      <ToastContainer />
     </>
   );
 }

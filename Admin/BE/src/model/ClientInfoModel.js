@@ -28,6 +28,14 @@ const ClientInfoSchema = new mongoose.Schema(
       type: String,
       default: "Not Verified",
     },
+    allowPromotion: {
+      type: Boolean,
+      default: true,
+    },
+    recaptchaToken: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

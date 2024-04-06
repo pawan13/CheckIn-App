@@ -13,8 +13,27 @@ const {
 const { sendOTPEmail } = require("../service/nodemailer");
 const { generateOTPCode } = require("../utils");
 
+const validateHuman = async (recaptchaToken) => {
+  const secret = process.env.RECAPTCHA_SECRET_KEY;
+  const response = await fetch(
+    `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${recaptchaToken}`,
+    {
+      method: "POST",
+    }
+  );
+  const data = await response.json();
+  return data.success;
+};
+
 const createClientInfoController = async (req, res, next) => {
   try {
+    const { recaptchaToken } = req.body;
+    const human = await validateHuman(recaptchaToken);
+    if (!human) {
+      res.status(400);
+      res.json({ errors: ["Please, you're not fooling us, bot."] });
+      return;
+    }
     await createClientInfo({ ...req.body });
     res.json({
       status: "SUCCESS",

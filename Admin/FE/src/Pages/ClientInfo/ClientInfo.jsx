@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { ClientInfoTable } from "../../components/ClientInfo/ClientInfoTable";
 import { fetchAllClientInfoAction } from "./ClientInfoAction";
 import { useSelector } from "react-redux";
+import { Layout } from "../../components/Layout/Layout";
 
 const ClientInfo = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,9 @@ const ClientInfo = () => {
   }, [dispatch, clientInfoList]);
   return (
     <>
-      <ClientInfoTable />
+      <Layout>
+        <ClientInfoTable />
+      </Layout>
     </>
   );
 };

@@ -4,7 +4,6 @@ import { loginAdminUser } from "./AdminAction";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import CustomInput from "../../components/custom-input/CustomInput";
-import Footer from "../../components/Layout/Footer";
 
 const SignIn = () => {
   const location = useLocation();
@@ -67,7 +66,6 @@ const SignIn = () => {
           </div>
         </Form>
       </main>
-      <Footer />
     </>
   );
 };

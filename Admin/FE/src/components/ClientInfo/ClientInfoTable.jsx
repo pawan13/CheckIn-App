@@ -23,7 +23,7 @@ export const ClientInfoTable = () => {
       <div className="w-25 mb-3">
         <Form.Control onChange={handleOnSearch} placeholder="Search by name" />
       </div>
-      <Table striped bordered hover>
+      <Table striped bordered hover >
         <thead>
           <tr>
             <th>#</th>
@@ -32,6 +32,7 @@ export const ClientInfoTable = () => {
             <th>Mobile</th>
             <th>VisitorType</th>
             <th>EmailVerified</th>
+            <th>Allow Promotion</th>
             <th>checked In </th>
             <th>Checked Out</th>
           </tr>
@@ -45,6 +46,7 @@ export const ClientInfoTable = () => {
               <td>{item.mobile}</td>
               <td>{item.visitorType}</td>
               <td>{item.isVerified}</td>
+              <td>{item.allowPromotion.toString()}</td>
               <td>{new Date(item.createdAt).toLocaleString()}</td>
               <td>{item.checkedOut}</td>
             </tr>
