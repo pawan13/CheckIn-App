@@ -25,6 +25,7 @@ export const fetchAllVisitorAction = () => async (dispatch) => {
 
 //VisitorInfo or ClientInfo
 export const createVisitorInfoAction = (data) => async (dispatch) => {
+  console.log(data);
   try {
     const { status, message } = await apiCreateVisitorInfo(data);
     if (status === "SUCCESS") {

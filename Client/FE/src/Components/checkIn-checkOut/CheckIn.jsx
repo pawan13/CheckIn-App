@@ -85,15 +85,16 @@ export const CheckIn = () => {
     e.preventDefault();
     // Recaptcha logic
 
-    const token = await recaptchaRef.current.executeAsync();
+    const recaptchaToken = await recaptchaRef.current.executeAsync();
     recaptchaRef.current.reset();
+    console.log("token in checkin", recaptchaToken);
     // Handle check-in logic
     const lowerCaseVisitorEmails = visitorEmails.map((email) =>
       email.toLowerCase()
     );
     const result = lowerCaseVisitorEmails.includes(form.email.toLowerCase());
     if (result) {
-      const data = { ...form, ...visitorType, allowPromotion, token };
+      const data = { ...form, ...visitorType, allowPromotion, recaptchaToken };
       dispatch(replaceVIsitorInfoAction(data));
     } else {
       dispatch(
@@ -101,7 +102,7 @@ export const CheckIn = () => {
           ...form,
           ...visitorType,
           allowPromotion,
-          token,
+          recaptchaToken,
         })
       );
     }
@@ -149,7 +150,7 @@ export const CheckIn = () => {
         <ReCAPTCHA
           ref={recaptchaRef}
           size="invisible"
-          sitekey="6LcNUrIpAAAAAB_-jxfDH4inXDzpFf8O7v-6ct4q"
+          sitekey="6LdzZrIpAAAAAD4nvoPbm-58ISnqDyXpVgnWeTY_"
         />
         <p className="d-grid mt-3">
           <Button disabled={show} variant="primary" type="submit">

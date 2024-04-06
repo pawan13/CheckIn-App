@@ -28,7 +28,9 @@ const validateHuman = async (recaptchaToken) => {
 const createClientInfoController = async (req, res, next) => {
   try {
     const { recaptchaToken } = req.body;
+    console.log(recaptchaToken);
     const human = await validateHuman(recaptchaToken);
+    console.log(human);
     if (!human) {
       res.status(400);
       res.json({ errors: ["Please, you're not fooling us, bot."] });
