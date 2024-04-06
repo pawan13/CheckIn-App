@@ -13,7 +13,7 @@ app.use(morgan("combined"));
 
 const { visitorTypeRouter } = require("./router/VisitorTypeRouter.js");
 const { ClientInfoRouter } = require("./router/ClientInfoRouter.js");
-const dbConnect = require("./config/mongoDB.js");
+const dbConnect = require("./config/MongoDB.js");
 // const { verificationRouter } = require("./router/verificationRouter.js");
 console.log(__dirname);
 app.use(express.static(__dirname + "/dist"));
