@@ -13,7 +13,7 @@ import {
 import CustomInput from "../custom-input/CustomInput";
 import { Button, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
-import ReCAPTCHA from "react-google-recaptcha";
+// import ReCAPTCHA from "react-google-recaptcha";
 
 export const CheckIn = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ export const CheckIn = () => {
   const [otp, setOTP] = useState("");
   const [show, setShow] = useState(false);
   const [allowPromotion, setAllowPromotion] = useState(true);
-  const recaptchaRef = useRef();
+  // const recaptchaRef = useRef();
 
   const handleCloseCheckIn = () => setShow(false);
 
@@ -85,16 +85,16 @@ export const CheckIn = () => {
     e.preventDefault();
     // Recaptcha logic
 
-    const recaptchaToken = await recaptchaRef.current.executeAsync();
-    recaptchaRef.current.reset();
-    console.log("token in checkin", recaptchaToken);
+    // const recaptchaToken = await recaptchaRef.current.executeAsync();
+    // recaptchaRef.current.reset();
+    // console.log("token in checkin", recaptchaToken);
     // Handle check-in logic
     const lowerCaseVisitorEmails = visitorEmails.map((email) =>
       email.toLowerCase()
     );
     const result = lowerCaseVisitorEmails.includes(form.email.toLowerCase());
     if (result) {
-      const data = { ...form, ...visitorType, allowPromotion, recaptchaToken };
+      const data = { ...form, ...visitorType, allowPromotion };
       dispatch(replaceVIsitorInfoAction(data));
     } else {
       dispatch(
@@ -102,7 +102,6 @@ export const CheckIn = () => {
           ...form,
           ...visitorType,
           allowPromotion,
-          recaptchaToken,
         })
       );
     }
@@ -147,11 +146,11 @@ export const CheckIn = () => {
             defaultChecked
           />
         </Form.Group>
-        <ReCAPTCHA
+        {/* <ReCAPTCHA
           ref={recaptchaRef}
           size="invisible"
           sitekey="6LdzZrIpAAAAAD4nvoPbm-58ISnqDyXpVgnWeTY_"
-        />
+        /> */}
         <p className="d-grid mt-3">
           <Button disabled={show} variant="primary" type="submit">
             CheckIn

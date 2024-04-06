@@ -27,6 +27,12 @@ app.use("/api/v1/visitor", visitorRouter);
 app.use("/api/v1/client", ClientInfoRouter);
 app.use("/api/v1/admin", AdminRouter);
 
+app.use(express.static(__dirname + "/dist"));
+
+app.get("*", (req, res) => {
+  res.sendFile(__dirname + "/dist/index.js");
+});
+
 app.use((err, req, res, next) => {
   res.status(500).json({
     status: "Error",

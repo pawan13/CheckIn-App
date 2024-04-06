@@ -32,10 +32,6 @@ const ClientInfoSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    recaptchaToken: {
-      type: String,
-      default: "",
-    },
   },
   { timestamps: true }
 );
