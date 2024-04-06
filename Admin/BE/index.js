@@ -30,7 +30,7 @@ app.use("/api/v1/admin", AdminRouter);
 app.use(express.static(__dirname + "/dist"));
 
 app.get("*", (req, res) => {
-  res.sendFile(__dirname + "/dist/index.js");
+  res.sendFile(__dirname + "/dist/index.html");
 });
 
 app.use((err, req, res, next) => {
