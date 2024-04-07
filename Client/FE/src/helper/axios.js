@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const Base_URL = "https://checkin-app.onrender.com/api/v1";
+const Base_URL = process.env.NODE_ENV !== "production" ? "/api/v1" : "/api/v1";
 
 const axiosProcessor = async ({ method, url = {}, body }) => {
   try {
