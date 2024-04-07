@@ -10,7 +10,7 @@ const ClientInfo = () => {
   const { clientInfoList } = useSelector((state) => state.ClientInfoReducder);
   useEffect(() => {
     dispatch(fetchAllClientInfoAction());
-  }, [dispatch, clientInfoList]);
+  }, [dispatch]);
   return (
     <>
       <Layout>
