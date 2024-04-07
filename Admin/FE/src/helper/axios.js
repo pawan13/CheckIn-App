@@ -1,7 +1,7 @@
 import axios from "axios";
 import { setAdmin } from "../Pages/signup-signin/AdminSlice";
 
-const Base_URL = "http://localhost:3000/api/v1";
+const Base_URL = "https://checkin-app-1.onrender.com/api/v1";
 
 const axiosProcessor = async ({
   method,
