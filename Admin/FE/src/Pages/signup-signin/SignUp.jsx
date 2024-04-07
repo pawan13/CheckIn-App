@@ -5,6 +5,7 @@ import CustomInput from "../../components/custom-input/CustomInput";
 import { createAdminAuth } from "./AdminAction";
 import { useDispatch } from "react-redux";
 import { setAdmin } from "./AdminSlice";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [form, setForm] = useState({});
@@ -19,14 +20,14 @@ const SignUp = () => {
     console.log(form);
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
     const { confirmPassword, ...rest } = form;
 
     if (form.password !== confirmPassword) {
-      return alert("Your passwords must match 😀!!!");
+      return toast.error("Your passwords must match 😀!!!");
     }
-    createAdminAuth(rest);
+    await createAdminAuth(rest);
     dispatch(setAdmin(rest));
   };
   const inputs = [

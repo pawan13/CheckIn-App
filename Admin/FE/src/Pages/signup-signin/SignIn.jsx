@@ -28,7 +28,7 @@ const SignIn = () => {
   };
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginAdminUser(form));
+    dispatch( loginAdminUser(form));
     console.log(admin);
     setIsLoggedIn(true);
   };

@@ -10,9 +10,15 @@ import { toast } from "react-toastify";
 
 export const createAdminAuth = async (obj) => {
   try {
-    const { status, message } = await apiRegisterAdmin(obj);
-    if (status === "error") {
-      toast.error("something went wrong!!");
+    const resPending = apiRegisterAdmin(obj);
+    toast.promise(resPending, {
+      pending: "Please wait ... ",
+    });
+    const { status, message } = await resPending;
+    console.log(status, message);
+    if (status === "SUCCESS") {
+      // Navigate({ to: "/main" });
+      toast.success("You have registered successfully!!");
     }
   } catch (error) {
     console.log("I am error");
@@ -22,8 +28,11 @@ export const createAdminAuth = async (obj) => {
 
 export const loginAdminUser = (obj) => async (dispatch) => {
   try {
-    const { status, token } = await apiLogInUser(obj);
-    console.log(status);
+    const resPending = apiLogInUser(obj);
+    toast.promise(resPending, {
+      pending: "Please wait ... ",
+    });
+    const { status, message, token } = await resPending;
     if (status === "SUCCESS") {
       // We will get token
       localStorage.setItem("accessJWT", token.accessJWT);

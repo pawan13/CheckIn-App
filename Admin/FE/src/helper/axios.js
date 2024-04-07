@@ -57,7 +57,6 @@ export const apiGetNewAccessToken = () => {
 };
 //Admin
 export const apiRegisterAdmin = (data) => {
-  console.log(data);
   return axiosProcessor({
     method: "post",
     body: data,
