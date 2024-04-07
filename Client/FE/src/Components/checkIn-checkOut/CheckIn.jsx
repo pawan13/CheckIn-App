@@ -21,7 +21,9 @@ export const CheckIn = () => {
   const { visitorInfoList } = useSelector((state) => state.VisitorReducer);
   useEffect(() => {
     dispatch(fetchAllVisitorAction());
-    dispatch(fetchAllVisitorInfoAction());
+    if (visitorInfoList?.length > 0) {
+      dispatch(fetchAllVisitorInfoAction());
+    }
   }, [dispatch]);
 
   const [form, setForm] = useState({});
@@ -75,7 +77,7 @@ export const CheckIn = () => {
   const handlePromotiomPermission = (e) => {
     setAllowPromotion(!allowPromotion);
   };
-  const visitorEmails = visitorInfoList.reduce((acc, visitor) => {
+  const visitorEmails = visitorInfoList?.reduce((acc, visitor) => {
     // Destructure each visitor object
     const { email, _id, ...rest } = visitor;
     acc.push(email);
@@ -89,10 +91,10 @@ export const CheckIn = () => {
     // recaptchaRef.current.reset();
     // console.log("token in checkin", recaptchaToken);
     // Handle check-in logic
-    const lowerCaseVisitorEmails = visitorEmails.map((email) =>
+    const lowerCaseVisitorEmails = visitorEmails?.map((email) =>
       email.toLowerCase()
     );
-    const result = lowerCaseVisitorEmails.includes(form.email.toLowerCase());
+    const result = lowerCaseVisitorEmails?.includes(form.email.toLowerCase());
     if (result) {
       const data = { ...form, ...visitorType, allowPromotion };
       dispatch(replaceVIsitorInfoAction(data));

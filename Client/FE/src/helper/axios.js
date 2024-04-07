@@ -24,7 +24,10 @@ const axiosProcessor = async ({ method, url = {}, body }) => {
 export const apiGetVisitors = () => {
   return axiosProcessor({
     method: "get",
-    url: `${Base_URL}/visitor`,
+    url:
+      process.env.NODE_ENV !== "production"
+        ? "http://localhost:3000/api/v1/visitor"
+        : "https://checkin-app.onrender.com/api/v1/visitor",
   });
 };
 

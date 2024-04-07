@@ -7,7 +7,6 @@ import { Layout } from "../../components/Layout/Layout";
 
 const ClientInfo = () => {
   const dispatch = useDispatch();
-  const { clientInfoList } = useSelector((state) => state.ClientInfoReducder);
   useEffect(() => {
     dispatch(fetchAllClientInfoAction());
   }, [dispatch]);

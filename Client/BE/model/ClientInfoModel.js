@@ -18,6 +18,7 @@ const ClientInfoSchema = new mongoose.Schema(
     visitorType: {
       type: String,
       enum: ["Buyer", "Visitor", "Entrepreneur"],
+      default: "Visitor",
       required: true,
     },
     checkedOut: {

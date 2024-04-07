@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3001;
 //Basic Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan("combined"));
 
 const { visitorTypeRouter } = require("./router/VisitorTypeRouter.js");
