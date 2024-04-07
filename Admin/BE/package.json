@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "build":"npm install --prefix ./FE && npm run build --prefix ./client && npm install",
+    "build": "npm install --prefix ./FE && npm run build --prefix ./FE && npm install",
     "dev": "nodemon index.js"
   },
   "author": "Beyond Himalaya Tech",
