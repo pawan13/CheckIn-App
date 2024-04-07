@@ -2,8 +2,8 @@ import axios from "axios";
 
 const Base_URL =
   process.env.NODE_ENV !== "production"
-    ? "http://localhost:3000/api/v1"
-    : "https://checkin-app.onrender.com/api/v1";
+    ? "http://localhost:3001/api/v1"
+    : "https://checkin-app-1.onrender.com/api/v1";
 const axiosProcessor = async ({ method, url = {}, body }) => {
   try {
     const { data } = await axios({
