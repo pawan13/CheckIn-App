@@ -5,7 +5,6 @@ import CustomInput from "../custom-input/CustomInput";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { updateVisitorCheckOutInfoAction } from "../../Pages/visitorType/VisitorAction";
-
 export const CheckOut = () => {
   const { visitorInfoList } = useSelector((state) => state.VisitorReducer);
 

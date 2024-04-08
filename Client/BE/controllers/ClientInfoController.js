@@ -13,32 +13,32 @@ const {
 const { sendOTPEmail } = require("../service/nodemailer");
 const { generateOTPCode } = require("../utils");
 
-// const validateHuman = async (recaptchaToken) => {
-//   const secret = process.env.RECAPTCHA_SECRET_KEY;
-//   const response = await fetch(
-//     `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${recaptchaToken}`,
-//     {
-//       method: "POST",
-//     }
-//   );
-//   const data = await response.json();
-//   console.log(data);
-//   return true;
-// };
+const validateHuman = async (recaptchaToken) => {
+  const secret = process.env.RECAPTCHA_SECRET_KEY;
+  const response = await fetch(
+    `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${recaptchaToken}`,
+    {
+      method: "POST",
+    }
+  );
+  const data = await response.json();
+  console.log(data.success);
+  return data.success;
+};
 
 const createClientInfoController = async (req, res, next) => {
   try {
-    const { recaptchaToken, ...rest } = req.body;
+    const { recaptchaToken } = req.body;
     console.log("recaptchaToken", recaptchaToken);
-    // const human = await validateHuman(recaptchaToken);
-    // console.log(human);
-    // if (!human) {
-    //   res.status(400);
-    //   res.json({ errors: ["Please, you're not fooling us, bot."] });
-    //   return;
-    // }
+    const human = await validateHuman(recaptchaToken);
+    console.log(human);
+    if (human) {
+      res.status(400);
+      res.json({ errors: ["Please, you're not fooling us, bot."] });
+      return;
+    }
     console.log("rest", rest);
-    const { status } = await createClientInfo({ ...rest });
+    const { status } = await createClientInfo(req.body);
     res.json({
       status: "SUCCESS",
       message: "New Client is created!",
@@ -114,17 +114,14 @@ const updateClientEmailVerifiedInfoController = async (req, res, next) => {
 const generateOTP = async (req, res, next) => {
   try {
     const { email } = req.body;
-    console.log("email", email);
     if (email) {
       const ClientInfo = await getAClientInfo({ email });
-      console.log("ClientInfo", ClientInfo);
       if (ClientInfo) {
         const otp = generateOTPCode();
         const result = await createSession({
           associate: email,
           accessToken: otp,
         });
-        console.log(result);
         if (result) {
           await sendOTPEmail({
             otp,
@@ -140,7 +137,7 @@ const generateOTP = async (req, res, next) => {
     }
     return res.status(500).json({
       status: "ERROR",
-      message: `Something went wrong`,
+      message: `Something went wrong `,
     });
   } catch (error) {
     next(error);

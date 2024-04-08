@@ -1,12 +1,13 @@
 const {
   getAllClientInfo,
-  getAClientInfo,
+  getAClientInfoById,
 } = require("../model/ClientInfoModel");
+const { createSession } = require("../model/SessionModel");
 
 const getAClientInfoController = async (req, res, next) => {
   try {
     const _id = req.params;
-    const result = await getAClientInfo(_id);
+    const result = await getAClientInfoById(_id);
     console.log(result);
     if (!result) {
       const error = new Error("Client Info not found!!");

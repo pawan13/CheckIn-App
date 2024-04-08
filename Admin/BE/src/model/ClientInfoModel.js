@@ -37,10 +37,10 @@ const ClientInfoSchema = new mongoose.Schema(
 );
 
 const ClientInfo = mongoose.model("ClientInfo", ClientInfoSchema);
-const getAClientInfo = (id) => ClientInfo.findById(id);
+const getAClientInfoById = (id) => ClientInfo.findById(id);
 const getAllClientInfo = (filter) => ClientInfo.find(filter);
 
 module.exports = {
-  getAClientInfo,
+  getAClientInfoById,
   getAllClientInfo,
 };

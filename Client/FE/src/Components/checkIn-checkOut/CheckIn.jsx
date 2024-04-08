@@ -13,7 +13,7 @@ import {
 import CustomInput from "../custom-input/CustomInput";
 import { Button, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
-// import ReCAPTCHA from "react-google-recaptcha";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export const CheckIn = () => {
   const dispatch = useDispatch();
@@ -21,9 +21,7 @@ export const CheckIn = () => {
   const { visitorInfoList } = useSelector((state) => state.VisitorReducer);
   useEffect(() => {
     dispatch(fetchAllVisitorAction());
-    if (visitorInfoList?.length > 0) {
-      dispatch(fetchAllVisitorInfoAction());
-    }
+    dispatch(fetchAllVisitorInfoAction());
   }, [dispatch]);
 
   const [form, setForm] = useState({});
@@ -31,7 +29,7 @@ export const CheckIn = () => {
   const [otp, setOTP] = useState("");
   const [show, setShow] = useState(false);
   const [allowPromotion, setAllowPromotion] = useState(true);
-  // const recaptchaRef = useRef();
+  const recaptchaRef = useRef();
 
   const handleCloseCheckIn = () => setShow(false);
 
@@ -79,7 +77,7 @@ export const CheckIn = () => {
   };
   const visitorEmails = visitorInfoList?.reduce((acc, visitor) => {
     // Destructure each visitor object
-    const { email, _id, ...rest } = visitor;
+    const { email } = visitor;
     acc.push(email);
     return acc;
   }, []);
@@ -87,16 +85,17 @@ export const CheckIn = () => {
     e.preventDefault();
     // Recaptcha logic
 
-    // const recaptchaToken = await recaptchaRef.current.executeAsync();
-    // recaptchaRef.current.reset();
-    // console.log("token in checkin", recaptchaToken);
+    const recaptchaToken = await recaptchaRef.current.executeAsync();
+
+    console.log("token in checkin", recaptchaToken);
+
     // Handle check-in logic
     const lowerCaseVisitorEmails = visitorEmails?.map((email) =>
       email.toLowerCase()
     );
     const result = lowerCaseVisitorEmails?.includes(form.email.toLowerCase());
     if (result) {
-      const data = { ...form, ...visitorType, allowPromotion };
+      const data = { ...form, ...visitorType, allowPromotion, recaptchaToken };
       dispatch(replaceVIsitorInfoAction(data));
     } else {
       dispatch(
@@ -104,11 +103,13 @@ export const CheckIn = () => {
           ...form,
           ...visitorType,
           allowPromotion,
+          recaptchaToken,
         })
       );
     }
     await generateOTPCodeAction(form.email);
     setShow(true);
+    recaptchaRef.current.reset();
     e.target.reset();
   };
 
@@ -148,11 +149,11 @@ export const CheckIn = () => {
             defaultChecked
           />
         </Form.Group>
-        {/* <ReCAPTCHA
+        <ReCAPTCHA
           ref={recaptchaRef}
           size="invisible"
-          sitekey="6LdzZrIpAAAAAD4nvoPbm-58ISnqDyXpVgnWeTY_"
-        /> */}
+          sitekey="6LeUcrQpAAAAAAq9jutgT36v77bowPToQOiTB6pi"
+        />
         <p className="d-grid mt-3">
           <Button disabled={show} variant="primary" type="submit">
             CheckIn

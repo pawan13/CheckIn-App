@@ -4,6 +4,10 @@ const Base_URL =
   process.env.NODE_ENV !== "production"
     ? "http://localhost:3001/api/v1"
     : "https://checkin-app-1.onrender.com/api/v1";
+const Admin_URL =
+  process.env.NODE_ENV !== "production"
+    ? "http://localhost:3000/api/v1"
+    : "https://checkin-app.onrender.com/api/v1";
 const axiosProcessor = async ({ method, url = {}, body }) => {
   try {
     const { data } = await axios({
@@ -24,16 +28,14 @@ const axiosProcessor = async ({ method, url = {}, body }) => {
 export const apiGetVisitors = () => {
   return axiosProcessor({
     method: "get",
-    url:
-      process.env.NODE_ENV !== "production"
-        ? "http://localhost:3000/api/v1/visitor"
-        : "https://checkin-app.onrender.com/api/v1/visitor",
+    url: `${Admin_URL}/visitor`,
   });
 };
 
 // VISITOR INFO OR CLIENT INFO
 
 export const apiCreateVisitorInfo = (data) => {
+  console.log(data);
   return axiosProcessor({
     method: "post",
     body: data,
@@ -44,7 +46,7 @@ export const apiCreateVisitorInfo = (data) => {
 export const apiGetVisitorInfo = () => {
   return axiosProcessor({
     method: "get",
-    url: `${Base_URL}/client`,
+    url: `${Admin_URL}/client`,
   });
 };
 
@@ -75,6 +77,7 @@ export const apiUpdateVisitorEmailverifyInfo = (email, isVerified) => {
 };
 // send otp code
 export const apiGenerateOTP = (data) => {
+  console.log(data, "data in axios otp request");
   return axiosProcessor({
     method: "post",
     body: data,

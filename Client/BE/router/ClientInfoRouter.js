@@ -2,11 +2,11 @@ const express = require("express");
 const {
   createClientInfoController,
   getAllClientInfoController,
-  generateOTP,
   verifyOTP,
   replaceClientInfoController,
   updateClientCheckOutInfoController,
   updateClientEmailVerifiedInfoController,
+  generateOTP,
 } = require("../controllers/ClientInfoController");
 
 const ClientInfoRouter = express.Router();

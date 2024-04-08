@@ -2,6 +2,7 @@ const express = require("express");
 const {
   getAClientInfoController,
   getAllClientInfoController,
+  generateOTP,
 } = require("../controllers/ClientInfoController");
 
 const ClientInfoRouter = express.Router();

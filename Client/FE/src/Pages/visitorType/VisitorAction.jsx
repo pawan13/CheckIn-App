@@ -28,8 +28,11 @@ export const createVisitorInfoAction = (data) => async (dispatch) => {
   console.log(data);
   try {
     const { status, message } = await apiCreateVisitorInfo(data);
+    console.log(status);
     if (status === "SUCCESS") {
       toast.success("Please verify the email with OTP");
+    } else {
+      console.log(message);
     }
   } catch (error) {
     toast.error(error.message);
@@ -39,6 +42,7 @@ export const createVisitorInfoAction = (data) => async (dispatch) => {
 export const fetchAllVisitorInfoAction = () => async (dispatch) => {
   try {
     const { result, status } = await apiGetVisitorInfo();
+    console.log(result);
     if (status === "SUCCESS") {
       dispatch(setVisitorInfoList(result));
     }
@@ -99,7 +103,7 @@ export const updateVisitorEmailVerifiedInfoAction = async (
 // Generate the OTP
 export const generateOTPCodeAction = async (email) => {
   try {
-    const { status } = await apiGenerateOTP({ email });
+    const { status, message } = await apiGenerateOTP({ email });
     console.log(status);
     if (status === "SUCCESS") {
       toast.success("Please check your email for OTP");
