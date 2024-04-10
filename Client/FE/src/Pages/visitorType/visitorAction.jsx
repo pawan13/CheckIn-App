@@ -6,6 +6,7 @@ import {
   apiReplaceVisitorInfo,
   apiUpdateVisitorCheckOutInfo,
   apiUpdateVisitorEmailverifyInfo,
+  apiValidateHuman,
   apiVerifyOTPCode,
 } from "../../helper/axios";
 import { toast } from "react-toastify";
@@ -20,6 +21,16 @@ export const fetchAllVisitorAction = () => async (dispatch) => {
     }
   } catch (error) {
     toast.error(error.message);
+  }
+};
+
+export const validateHumanAction = async (recaptchaToken) => {
+  try {
+    
+    const result = await apiValidateHuman(recaptchaToken);
+    console.log(result);
+  } catch (error) {
+    toast.error("Hey, Bug don't fool me.");
   }
 };
 

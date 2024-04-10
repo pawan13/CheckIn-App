@@ -7,6 +7,7 @@ const {
   updateClientCheckOutInfoController,
   updateClientEmailVerifiedInfoController,
   generateOTP,
+  validateHumanController,
 } = require("../controllers/ClientInfoController");
 
 const ClientInfoRouter = express.Router();
@@ -19,6 +20,7 @@ ClientInfoRouter.patch(
   "/updateEmailVerified",
   updateClientEmailVerifiedInfoController
 );
+ClientInfoRouter.post("/recaptcha", validateHumanController);
 ClientInfoRouter.post("/request-otp", generateOTP);
 ClientInfoRouter.post("/verify-otp", verifyOTP);
 

@@ -67,6 +67,15 @@ export const apiUpdateVisitorCheckOutInfo = (email, checkedOut) => {
   });
 };
 
+export const apiValidateHuman = (recaptchaToken) => {
+  console.log(recaptchaToken);
+  return axiosProcessor({
+    method: "post",
+    body: recaptchaToken,
+    url: `${Base_URL}/client/recaptcha`,
+  });
+};
+
 export const apiUpdateVisitorEmailverifyInfo = (email, isVerified) => {
   console.log(email, isVerified);
   return axiosProcessor({

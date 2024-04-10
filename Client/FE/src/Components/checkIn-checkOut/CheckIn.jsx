@@ -8,6 +8,7 @@ import {
   generateOTPCodeAction,
   replaceVIsitorInfoAction,
   updateVisitorEmailVerifiedInfoAction,
+  validateHumanAction,
   verifyOTPAction,
 } from "../../Pages/visitorType/VisitorAction";
 import CustomInput from "../custom-input/CustomInput";
@@ -86,26 +87,25 @@ export const CheckIn = () => {
     // Recaptcha logic
 
     const recaptchaToken = await recaptchaRef.current.executeAsync();
-
     console.log("token in checkin", recaptchaToken);
+
+    const human = await validateHumanAction(recaptchaToken);
 
     // Handle check-in logic
     const lowerCaseVisitorEmails = visitorEmails?.map((email) =>
       email.toLowerCase()
     );
+
     const result = lowerCaseVisitorEmails?.includes(form.email.toLowerCase());
     if (result) {
-      const data = { ...form, ...visitorType, allowPromotion, recaptchaToken };
+      const data = { ...form, ...visitorType, allowPromotion };
       dispatch(replaceVIsitorInfoAction(data));
     } else {
-      dispatch(
-        createVisitorInfoAction({
-          ...form,
-          ...visitorType,
-          allowPromotion,
-          recaptchaToken,
-        })
-      );
+      if (human) {
+        dispatch(createVisitorInfoAction(data));
+      } else {
+        return toast.error("You can't fool me bot!");
+      }
     }
     await generateOTPCodeAction(form.email);
     setShow(true);

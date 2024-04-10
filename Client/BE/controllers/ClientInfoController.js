@@ -13,7 +13,7 @@ const {
 const { sendOTPEmail } = require("../service/nodemailer");
 const { generateOTPCode } = require("../utils");
 
-const validateHuman = async (recaptchaToken) => {
+const validateHumanController = async (recaptchaToken) => {
   const secret = process.env.RECAPTCHA_SECRET_KEY;
   const response = await fetch(
     `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${recaptchaToken}`,
@@ -28,17 +28,7 @@ const validateHuman = async (recaptchaToken) => {
 
 const createClientInfoController = async (req, res, next) => {
   try {
-    const { recaptchaToken } = req.body;
-    console.log("recaptchaToken", recaptchaToken);
-    const human = await validateHuman(recaptchaToken);
-    console.log(human);
-    if (!human) {
-      res.status(400);
-      res.json({ errors: ["Please, you're not fooling us, bot."] });
-      return;
-    }
-    console.log("rest", rest);
-    const { status } = await createClientInfo(req.body);
+    await createClientInfo(req.body);
     res.json({
       status: "SUCCESS",
       message: "New Client is created!",
@@ -195,6 +185,7 @@ module.exports = {
   replaceClientInfoController,
   updateClientCheckOutInfoController,
   updateClientEmailVerifiedInfoController,
+  validateHumanController,
   generateOTP,
   verifyOTP,
 };
