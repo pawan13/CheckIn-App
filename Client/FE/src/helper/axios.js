@@ -4,10 +4,6 @@ const Base_URL =
   process.env.NODE_ENV !== "production"
     ? "http://localhost:3001/api/v1"
     : "https://checkin-app-1.onrender.com/api/v1";
-const Admin_URL =
-  process.env.NODE_ENV !== "production"
-    ? "http://localhost:3000/api/v1"
-    : "https://checkin-app.onrender.com/api/v1";
 const axiosProcessor = async ({ method, url = {}, body }) => {
   try {
     const { data } = await axios({
@@ -28,29 +24,28 @@ const axiosProcessor = async ({ method, url = {}, body }) => {
 export const apiGetVisitors = () => {
   return axiosProcessor({
     method: "get",
-    url: `${Admin_URL}/visitor`,
+    url: `${Base_URL}/visitor`,
   });
 };
 
 // VISITOR INFO OR CLIENT INFO
 
-export const apiCreateVisitorInfo = (data) => {
-  console.log(data);
+export const apiCreateClientInfo = (data, recaptchaToken) => {
   return axiosProcessor({
     method: "post",
-    body: data,
+    body: { data, recaptchaToken },
     url: `${Base_URL}/client`,
   });
 };
 
-export const apiGetVisitorInfo = () => {
+export const apiGetClientInfo = () => {
   return axiosProcessor({
     method: "get",
-    url: `${Admin_URL}/client`,
+    url: `${Base_URL}/client`,
   });
 };
 
-export const apiReplaceVisitorInfo = (data) => {
+export const apiReplaceClientInfo = (data) => {
   return axiosProcessor({
     method: "post",
     body: data,
@@ -58,7 +53,7 @@ export const apiReplaceVisitorInfo = (data) => {
   });
 };
 
-export const apiUpdateVisitorCheckOutInfo = (email, checkedOut) => {
+export const apiUpdateClientCheckOutInfo = (email, checkedOut) => {
   console.log(email, checkedOut);
   return axiosProcessor({
     method: "patch",
@@ -67,16 +62,7 @@ export const apiUpdateVisitorCheckOutInfo = (email, checkedOut) => {
   });
 };
 
-export const apiValidateHuman = (recaptchaToken) => {
-  console.log(recaptchaToken);
-  return axiosProcessor({
-    method: "post",
-    body: recaptchaToken,
-    url: `${Base_URL}/client/recaptcha`,
-  });
-};
-
-export const apiUpdateVisitorEmailverifyInfo = (email, isVerified) => {
+export const apiUpdateClientEmailverifyInfo = (email, isVerified) => {
   console.log(email, isVerified);
   return axiosProcessor({
     method: "patch",
@@ -85,11 +71,10 @@ export const apiUpdateVisitorEmailverifyInfo = (email, isVerified) => {
   });
 };
 // send otp code
-export const apiGenerateOTP = (data) => {
-  console.log(data, "data in axios otp request");
+export const apiGenerateOTP = (email) => {
   return axiosProcessor({
     method: "post",
-    body: data,
+    body: { email },
     url: `${Base_URL}/client/request-otp`,
   });
 };

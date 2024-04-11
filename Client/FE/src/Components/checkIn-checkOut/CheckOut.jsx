@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 import CustomInput from "../custom-input/CustomInput";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { updateVisitorCheckOutInfoAction } from "../../Pages/visitorType/VisitorAction";
+import { updateClientCheckOutInfoAction } from "../../Pages/ClientInfo/ClientInfoAction";
 export const CheckOut = () => {
-  const { visitorInfoList } = useSelector((state) => state.VisitorReducer);
+  const { clientInfoList } = useSelector((state) => state.ClientReducer);
 
   const [email, setEmail] = useState("");
 
@@ -18,7 +18,7 @@ export const CheckOut = () => {
       required: true,
     },
   ];
-  const visitorEmails = visitorInfoList.reduce((acc, visitor) => {
+  const visitorEmails = clientInfoList.reduce((acc, visitor) => {
     // Destructure each visitor object
     const { email, ...rest } = visitor;
     acc.push(email);
@@ -36,7 +36,7 @@ export const CheckOut = () => {
       const currentTime = new Date().toLocaleTimeString();
       const currentDateTime = `${currentDate}${currentTime}`;
       console.log(currentDate, currentTime, currentDateTime);
-      await updateVisitorCheckOutInfoAction(email, currentDateTime);
+      updateClientCheckOutInfoAction(email, currentDateTime);
     } else {
       toast.error("you must checkin to checkout");
     }

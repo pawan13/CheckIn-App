@@ -12,23 +12,50 @@ const {
 } = require("../model/SessionModel");
 const { sendOTPEmail } = require("../service/nodemailer");
 const { generateOTPCode } = require("../utils");
+const axios = require("axios");
 
-const validateHumanController = async (recaptchaToken) => {
-  const secret = process.env.RECAPTCHA_SECRET_KEY;
-  const response = await fetch(
-    `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${recaptchaToken}`,
-    {
-      method: "POST",
+const validateHuman = async (recaptchaToken) => {
+  try {
+    const VERIFY_URL = `https://www.google.com/recaptcha/api/siteverify?`;
+    const secret =
+      process.env.RECAPTCHA_SECRET_KEY ||
+      "6LeUcrQpAAAAAICwRVNvg6RI5en5BPIoDtmv7UpQ";
+    console.log("recaptchaToken", recaptchaToken);
+    const response = await axios.post(VERIFY_URL, null, {
+      params: {
+        secret: secret,
+        response: recaptchaToken,
+      },
+    });
+
+    console.log(response.data.success);
+    if (response.data.success) {
+      // Perform your further actions here if verification is successful
+      res.json({ success: true });
+    } else {
+      res.json({ success: false });
     }
-  );
-  const data = await response.json();
-  console.log(data.success);
-  return data.success;
+    return response.data.success;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const createClientInfoController = async (req, res, next) => {
   try {
-    await createClientInfo(req.body);
+    const { recaptchaToken, ...rest } = req.body;
+
+    human = validateHuman(recaptchaToken);
+    console.log(human);
+    if (!human) {
+      res.json({
+        status: "ERROR",
+        message: "OOPs, you cannot fool me bot!!",
+      });
+    }
+    console.log(rest);
+    await createClientInfo(rest);
+
     res.json({
       status: "SUCCESS",
       message: "New Client is created!",
@@ -88,8 +115,8 @@ const updateClientCheckOutInfoController = async (req, res, next) => {
 
 const updateClientEmailVerifiedInfoController = async (req, res, next) => {
   try {
-    console.log("Checking update....");
     const { email, isVerified } = req.body;
+    console.log("update email verified", email, isVerified);
     const result = await updateClientInfo({ email }, { isVerified });
 
     res.json({
@@ -185,7 +212,6 @@ module.exports = {
   replaceClientInfoController,
   updateClientCheckOutInfoController,
   updateClientEmailVerifiedInfoController,
-  validateHumanController,
   generateOTP,
   verifyOTP,
 };

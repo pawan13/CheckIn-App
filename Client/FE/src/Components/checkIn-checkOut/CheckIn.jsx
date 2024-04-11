@@ -1,28 +1,27 @@
 // CheckIn.js
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createVisitorInfoAction,
-  fetchAllVisitorAction,
-  fetchAllVisitorInfoAction,
-  generateOTPCodeAction,
-  replaceVIsitorInfoAction,
-  updateVisitorEmailVerifiedInfoAction,
-  validateHumanAction,
-  verifyOTPAction,
-} from "../../Pages/visitorType/VisitorAction";
+import { fetchAllVisitorAction } from "../../Pages/visitorType/VisitorAction";
 import CustomInput from "../custom-input/CustomInput";
 import { Button, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ReCAPTCHA from "react-google-recaptcha";
+import {
+  createClientInfoAction,
+  fetchAllClientInfoAction,
+  generateOTPCodeAction,
+  replaceClientInfoAction,
+  updateClientEmailVerifiedInfoAction,
+  verifyOTPAction,
+} from "../../Pages/ClientInfo/ClientInfoAction";
 
 export const CheckIn = () => {
   const dispatch = useDispatch();
   const { visitorTypeList } = useSelector((state) => state.VisitorReducer);
-  const { visitorInfoList } = useSelector((state) => state.VisitorReducer);
+  const { clientInfoList } = useSelector((state) => state.ClientReducer);
   useEffect(() => {
     dispatch(fetchAllVisitorAction());
-    dispatch(fetchAllVisitorInfoAction());
+    dispatch(fetchAllClientInfoAction());
   }, [dispatch]);
 
   const [form, setForm] = useState({});
@@ -76,7 +75,7 @@ export const CheckIn = () => {
   const handlePromotiomPermission = (e) => {
     setAllowPromotion(!allowPromotion);
   };
-  const visitorEmails = visitorInfoList?.reduce((acc, visitor) => {
+  const visitorEmails = clientInfoList?.reduce((acc, visitor) => {
     // Destructure each visitor object
     const { email } = visitor;
     acc.push(email);
@@ -87,9 +86,8 @@ export const CheckIn = () => {
     // Recaptcha logic
 
     const recaptchaToken = await recaptchaRef.current.executeAsync();
+    recaptchaRef.current.reset();
     console.log("token in checkin", recaptchaToken);
-
-    const human = await validateHumanAction(recaptchaToken);
 
     // Handle check-in logic
     const lowerCaseVisitorEmails = visitorEmails?.map((email) =>
@@ -97,19 +95,19 @@ export const CheckIn = () => {
     );
 
     const result = lowerCaseVisitorEmails?.includes(form.email.toLowerCase());
+    console.log(result);
+    const data = { ...form, ...visitorType, allowPromotion };
     if (result) {
-      const data = { ...form, ...visitorType, allowPromotion };
-      dispatch(replaceVIsitorInfoAction(data));
+      replaceClientInfoAction(data);
     } else {
-      if (human) {
-        dispatch(createVisitorInfoAction(data));
-      } else {
-        return toast.error("You can't fool me bot!");
-      }
+      createClientInfoAction(data, recaptchaToken);
     }
-    await generateOTPCodeAction(form.email);
-    setShow(true);
-    recaptchaRef.current.reset();
+    const generateOTPResult = await generateOTPCodeAction(form.email);
+    console.log(generateOTPResult);
+    if (generateOTPResult) {
+      setShow(true);
+    }
+
     e.target.reset();
   };
 
@@ -120,7 +118,7 @@ export const CheckIn = () => {
     } else {
       toast.error("You must fill the OTP");
     }
-    await updateVisitorEmailVerifiedInfoAction(form.email, "Verified");
+    dispatch(updateClientEmailVerifiedInfoAction(form.email, "Verified"));
     setShow(false);
   };
 
