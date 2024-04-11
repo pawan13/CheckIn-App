@@ -14,53 +14,39 @@ const { sendOTPEmail } = require("../service/nodemailer");
 const { generateOTPCode } = require("../utils");
 const axios = require("axios");
 
-const validateHuman = async (recaptchaToken) => {
+const createClientInfoController = async (req, res, next) => {
   try {
+    const { recaptchaToken, data } = req.body;
     const VERIFY_URL = `https://www.google.com/recaptcha/api/siteverify?`;
     const secret =
       process.env.RECAPTCHA_SECRET_KEY ||
       "6LeUcrQpAAAAAICwRVNvg6RI5en5BPIoDtmv7UpQ";
-    console.log("recaptchaToken", recaptchaToken);
     const response = await axios.post(VERIFY_URL, null, {
       params: {
         secret: secret,
         response: recaptchaToken,
       },
     });
-
-    console.log(response.data.success);
-    if (response.data.success) {
-      // Perform your further actions here if verification is successful
-      res.json({ success: true });
-    } else {
-      res.json({ success: false });
-    }
-    return response.data.success;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const createClientInfoController = async (req, res, next) => {
-  try {
-    const { recaptchaToken, ...rest } = req.body;
-
-    human = validateHuman(recaptchaToken);
-    console.log(human);
-    if (!human) {
-      res.json({
+    if (!response.data.success) {
+      return res.json({
         status: "ERROR",
         message: "OOPs, you cannot fool me bot!!",
       });
     }
-    console.log(rest);
-    await createClientInfo(rest);
-
-    res.json({
-      status: "SUCCESS",
-      message: "New Client is created!",
+    console.log({ data });
+    const User = await createClientInfo(data);
+    if (User) {
+      return res.json({
+        status: "SUCCESS",
+        message: "New Client is created!",
+      });
+    }
+    return res.status(500).json({
+      status: "ERROR",
+      message: `Client is not created`,
     });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -131,30 +117,31 @@ const updateClientEmailVerifiedInfoController = async (req, res, next) => {
 const generateOTP = async (req, res, next) => {
   try {
     const { email } = req.body;
+    console.log(email);
     if (email) {
-      const ClientInfo = await getAClientInfo({ email });
-      if (ClientInfo) {
-        const otp = generateOTPCode();
-        const result = await createSession({
-          associate: email,
-          accessToken: otp,
-        });
-        if (result) {
-          await sendOTPEmail({
-            otp,
-            email,
-            fullName: ClientInfo.fullName,
-          });
-        }
-        return res.json({
-          status: "SUCCESS",
-          message: "OTP Sent",
+      // const ClientInfo = await getAClientInfo({ email });
+      // if (ClientInfo) {
+      const otp = generateOTPCode();
+      const result = await createSession({
+        associate: email,
+        accessToken: otp,
+      });
+      if (result) {
+        await sendOTPEmail({
+          otp,
+          email,
+          fullName: email.split("@")[0],
         });
       }
+      return res.json({
+        status: "SUCCESS",
+        message: "OTP Sent",
+      });
     }
+    // }
     return res.status(500).json({
       status: "ERROR",
-      message: `Something went wrong `,
+      message: `Cannot sent the email`,
     });
   } catch (error) {
     next(error);

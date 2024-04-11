@@ -90,7 +90,8 @@ export const updateClientEmailVerifiedInfoAction =
 // Generate the OTP
 export const generateOTPCodeAction = async (email) => {
   try {
-    const { status, message } = await apiGenerateOTP({ email });
+    console.log(email);
+    const { status, message } = await apiGenerateOTP(email);
     console.log(status);
     if (status === "SUCCESS") {
       toast.success("Please check your email for OTP");

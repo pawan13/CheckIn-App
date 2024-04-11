@@ -98,15 +98,13 @@ export const CheckIn = () => {
     console.log(result);
     const data = { ...form, ...visitorType, allowPromotion };
     if (result) {
-      replaceClientInfoAction(data);
+      dispatch(replaceClientInfoAction(data));
     } else {
-      createClientInfoAction(data, recaptchaToken);
+      dispatch(createClientInfoAction(data, recaptchaToken));
     }
-    const generateOTPResult = await generateOTPCodeAction(form.email);
-    console.log(generateOTPResult);
-    if (generateOTPResult) {
-      setShow(true);
-    }
+    await generateOTPCodeAction(form.email);
+
+    setShow(true);
 
     e.target.reset();
   };

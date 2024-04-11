@@ -1,11 +1,12 @@
 // CheckOut.js
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CustomInput from "../custom-input/CustomInput";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { updateClientCheckOutInfoAction } from "../../Pages/ClientInfo/ClientInfoAction";
 export const CheckOut = () => {
+  const dispatch = useDispatch();
   const { clientInfoList } = useSelector((state) => state.ClientReducer);
 
   const [email, setEmail] = useState("");
@@ -36,7 +37,7 @@ export const CheckOut = () => {
       const currentTime = new Date().toLocaleTimeString();
       const currentDateTime = `${currentDate}${currentTime}`;
       console.log(currentDate, currentTime, currentDateTime);
-      updateClientCheckOutInfoAction(email, currentDateTime);
+      dispatch(updateClientCheckOutInfoAction(email, currentDateTime));
     } else {
       toast.error("you must checkin to checkout");
     }
