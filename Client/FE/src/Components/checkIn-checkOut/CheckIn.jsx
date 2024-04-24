@@ -6,6 +6,7 @@ import CustomInput from "../custom-input/CustomInput";
 import { Button, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ReCAPTCHA from "react-google-recaptcha";
+import { useNavigate } from "react-router-dom";
 import {
   createClientInfoAction,
   fetchAllClientInfoAction,
@@ -17,6 +18,7 @@ import {
 
 export const CheckIn = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { visitorTypeList } = useSelector((state) => state.VisitorReducer);
   const { clientInfoList } = useSelector((state) => state.ClientReducer);
   useEffect(() => {
@@ -118,6 +120,7 @@ export const CheckIn = () => {
     }
     dispatch(updateClientEmailVerifiedInfoAction(form.email, "Verified"));
     setShow(false);
+    navigate("/thankyou");
   };
 
   return (

@@ -1,7 +1,6 @@
 import { apiCreateVisitor, apiGetVisitors } from "../../helper/axios";
 import { setVisitorTypeList } from "./VisitorSlice";
 
-
 export const addVisitorAction = (id, data) => async (dispatch) => {
   try {
     const { result, status, message } = await apiCreateVisitor(id, data);
@@ -11,18 +10,6 @@ export const addVisitorAction = (id, data) => async (dispatch) => {
     console.log(error);
   }
 };
-
-//   export const updateVisitorAction =
-//     (id,data) =>
-//       async (dispatch) => {
-//         try {
-//           const { result, status, message } = await apiUpdateCategoryAction(id,data);
-
-//           dispatch(fetchAllVisitorAction());
-//         } catch (error) {
-//           toast.error(error.message);
-//         }
-//       };
 
 export const fetchAllVisitorAction = () => async (dispatch) => {
   try {
@@ -35,20 +22,3 @@ export const fetchAllVisitorAction = () => async (dispatch) => {
     console.log(error.message);
   }
 };
-
-//   export const deleteCat = (slug) => (dispatch) => {
-//     try {
-//       const pending = deleteDoc(doc(db, TBL_CATEGOR, slug));
-
-//       toast.promise(pending, {
-//         pending: "Please wait while deleting..",
-//         success: "Category has been deleted",
-//         error:
-//           "Unable to delete the category, please try again later or contact admin",
-//       });
-
-//       dispatch(fetchAllCategoryAction());
-//     } catch (error) {
-//       toast.error(error.message);
-//     }
-//   };

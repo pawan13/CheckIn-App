@@ -1,0 +1,49 @@
+# docker-compose up -d
+# docker-compose down
+# docker run --name my-mongodb -d --network=ecommerce-network -p 27105:27017 -v /Users/kiran/Desktop/docker-vol:/data/db mongo
+# To build and image and push to repo
+# docker login
+# Create a repo
+# docker build ukiras123/reponame .
+# docker push ukiras123/reponame
+version: "3"
+services:
+  admin-fe:
+    build:
+      context: ./Admin/FE
+    ports:
+      - "4000:4000"
+    networks:
+      - app_network
+  admin-api:
+    build:
+      context: ./Admin/BE
+    ports:
+      - "3000:3000"
+    networks:
+      - app_network
+    volumes:
+      - app_api_data:/usr/src/app/public/product/images
+    env_file: ./Admin/BE/src/config/production.env
+  client-fe:
+    build:
+      context: ./Client/FE
+    ports:
+      - "4001:4001"
+    networks:
+      - app_network
+  client-api:
+    build:
+      context: ./Client/BE
+    ports:
+      - "3001:3001"
+    networks:
+      - app_network
+    env_file: ./Client/BE/config/production.env
+
+volumes:
+  app_data:
+  app_api_data:
+
+networks:
+  app_network:

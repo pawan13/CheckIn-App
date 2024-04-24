@@ -79,7 +79,7 @@ export const updateClientEmailVerifiedInfoAction =
       );
       console.log(status);
       if (status === "SUCCESS") {
-        toast.success("Please verify the email with OTP");
+        toast.success("Email Verified!!!");
       } else {
         return toast.error(message);
       }
@@ -106,7 +106,7 @@ export const verifyOTPAction = async (email, otp) => {
     console.log(email, otp);
     const { status, message } = await apiVerifyOTPCode(email, otp);
     if (status === "SUCCESS") {
-      toast.success("Thanks for checking In");
+      // toast.success("Thanks for checking In");
     }
   } catch (error) {
     toast.error(error.message);

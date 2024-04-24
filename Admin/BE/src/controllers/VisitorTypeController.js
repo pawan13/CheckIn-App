@@ -4,7 +4,7 @@ const {
   getVisitorById,
   updateVisitorsById,
   deleteVisitorsById,
-} = require("../model/visitorTypeModel");
+} = require("../model/VisitorTypeModel");
 
 const createVisitorController = async (req, res, next) => {
   try {

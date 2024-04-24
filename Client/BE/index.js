@@ -18,8 +18,6 @@ const { visitorTypeRouter } = require("./router/VisitorTypeRouter.js");
 const { ClientInfoRouter } = require("./router/ClientInfoRouter.js");
 const dbConnect = require("./config/MongoDB.js");
 // const { verificationRouter } = require("./router/verificationRouter.js");
-console.log(__dirname);
-app.use(express.static(__dirname + "/dist"));
 
 //health check
 app.get("/health", (req, res) => {
@@ -40,9 +38,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.get("*", (req, res) => {
-  res.sendFile(__dirname + "/dist/index.html");
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(__dirname + "/dist/index.html");
+// });
 
 dbConnect()
   .then(() => {
