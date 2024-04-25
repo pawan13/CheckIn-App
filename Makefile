@@ -18,7 +18,7 @@ build-production:
 	cd Client/FE && $(MAKE) build
 
 run-production:
-	docker-compose -f docker-compose-production.yml up
+	docker-compose -f docker-compose-production.yml up -d
 
 ### SSH For Digital Ocean
 SSH_STRING:=root@170.64.224.105
