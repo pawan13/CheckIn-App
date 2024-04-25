@@ -12,14 +12,14 @@ services:
     container_name: admin-fe
     build:
       context: ./Admin/FE
+      args:
+        - VITE_API_URL=http://client-checkin.beyondhimalayatech.com/api
     ports:
       - "4000:4000"
     expose:
       - "4000"
     networks:
       - app_network
-    environment:
-      - VITE_API_URL=http://client-checkin.beyondhimalayatech.com/api
   admin-api:
     container_name: admin-api
     build:
@@ -37,14 +37,14 @@ services:
     container_name: client-fe
     build:
       context: ./Client/FE
+      args:
+        - VITE_API_URL=http://admin-checkin.beyondhimalayatech.com/api
     ports:
       - "4001:4001"
     expose:
       - "4001"
     networks:
       - app_network
-    environment:
-      - VITE_API_URL=http://admin-checkin.beyondhimalayatech.com/api
   client-api:
     container_name: client-api
     build:
