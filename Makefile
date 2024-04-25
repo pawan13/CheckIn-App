@@ -10,21 +10,15 @@ run-dev:
 	docker-compose -f docker-compose-dev.yml up
 
 ### Production
+build:
+	docker-compose -f docker-compose-production.yml build
 
-build-production:
-	cd Admin/BE && $(MAKE) build
-	cd Admin/FE && $(MAKE) build
-	cd Client/BE && $(MAKE) build
-	cd Client/FE && $(MAKE) build
-
-run-production:
+run:
 	docker-compose -f docker-compose-production.yml up -d
 
-down-production:
+down:
 	docker-compose -f docker-compose-production.yml down
 
-build-production2:
-	docker-compose -f docker-compose-production.yml build
 
 
 ### SSH For Digital Ocean
