@@ -66,13 +66,14 @@ services:
     networks:
       - app_network
   certbot:
+    depends_on:
+      - nginx
     image: certbot/certbot
     container_name: certbot
     volumes:
       - ./certbot/config:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    command:
-      - certonly --webroot -w /var/www/certbot --email ukiras@gmail.com -d admin-checkin.beyondhimalayatech.com -d client-checkin.beyondhimalayatech.com --agree-tos
+    command: certonly --webroot -w /var/www/certbot --email ukiras@gmail.com -d admin-checkin.beyondhimalayatech.com -d client-checkin.beyondhimalayatech.com --agree-tos
     networks:
       - app_network
 
