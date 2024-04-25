@@ -26,6 +26,14 @@ app.get("/health", (req, res) => {
 app.use("/api/v1/visitor", visitorRouter);
 app.use("/api/v1/client", ClientInfoRouter);
 app.use("/api/v1/admin", AdminRouter);
+app.use("*", (req, res) => {
+  const obj = {
+    method: req.method,
+    url: req.url,
+    body: req.body,
+  }
+  res.send(obj)
+})
 
 // app.get("*", (req, res) => {
 //   res.sendFile(__dirname + "/dist/index.html");
