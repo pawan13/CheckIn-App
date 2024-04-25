@@ -9,6 +9,7 @@
 version: "3"
 services:
   admin-fe:
+    container_name: admin-fe
     build:
       context: ./Admin/FE
     ports:
@@ -16,6 +17,7 @@ services:
     networks:
       - app_network
   admin-api:
+    container_name: admin-api
     build:
       context: ./Admin/BE
     ports:
@@ -26,6 +28,7 @@ services:
       - app_api_data:/usr/src/app/public/product/images
     env_file: ./Admin/BE/src/config/production.env
   client-fe:
+    container_name: client-fe
     build:
       context: ./Client/FE
     ports:
@@ -33,6 +36,7 @@ services:
     networks:
       - app_network
   client-api:
+    container_name: client-api
     build:
       context: ./Client/BE
     ports:
