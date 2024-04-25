@@ -40,6 +40,19 @@ services:
     networks:
       - app_network
     env_file: ./Client/BE/config/production.env
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - admin-fe
+      - admin-api
+      - client-fe
+      - client-api
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - app_network
 
 volumes:
   app_data:
