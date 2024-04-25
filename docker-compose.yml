@@ -19,7 +19,7 @@ services:
     networks:
       - app_network
     environment:
-      - VITE_API_URL=https://client-checkin.beyondhimalayatech.com/api
+      - VITE_API_URL=http://client-checkin.beyondhimalayatech.com/api
   admin-api:
     container_name: admin-api
     build:
@@ -44,7 +44,7 @@ services:
     networks:
       - app_network
     environment:
-      - VITE_API_URL=https://admin-checkin.beyondhimalayatech.com/api
+      - VITE_API_URL=http://admin-checkin.beyondhimalayatech.com/api
   client-api:
     container_name: client-api
     build:
