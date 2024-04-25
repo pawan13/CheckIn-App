@@ -67,7 +67,6 @@ services:
       - admin-api
       - client-fe
       - client-api
-      - certbot
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./certbot/config:/etc/letsencrypt
