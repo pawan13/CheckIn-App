@@ -23,7 +23,7 @@ run-production:
 down-production:
 	docker-compose -f docker-compose-production.yml down
 
-build-production:
+build-production2:
 	docker-compose -f docker-compose-production.yml build
 
 
