@@ -5,7 +5,7 @@ services:
     build:
       context: ./Admin/FE
       args:
-        - VITE_API_URL=http://admin-checkin.beyondhimalayatech.com/api/api/v1
+        - VITE_API_URL=http://admin-checkin.beyondhimalayatech.net/api/api/v1
     ports:
       - "4000:4000"
     expose:
@@ -30,7 +30,7 @@ services:
     build:
       context: ./Client/FE
       args:
-        - VITE_API_URL=http://client-checkin.beyondhimalayatech.com/api/api/v1
+        - VITE_API_URL=http://client-checkin.beyondhimalayatech.net/api/api/v1
     ports:
       - "4001:4001"
     expose:
@@ -71,7 +71,7 @@ services:
     volumes:
       - ./certbot/config:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --email ukiras@gmail.com -d admin-checkin.beyondhimalayatech.com -d client-checkin.beyondhimalayatech.com --agree-tos
+    command: certonly --webroot -w /var/www/certbot --email ukiras@gmail.com -d admin-checkin.beyondhimalayatech.net -d client-checkin.beyondhimalayatech.net --agree-tos
     networks:
       - app_network
 
