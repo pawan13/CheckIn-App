@@ -80,7 +80,7 @@ services:
     volumes:
       - ./certbot/config:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --force-renewal -d client-checkin.beyondhimalayatech.com --email ukiras@gmail.com -d admin-checkin.beyondhimalayatech.com --agree-tos
+    command: certonly --webroot -w /var/www/certbot --force-renewal -d client-checkin.beyondhimalayatech.net -d admin-checkin.beyondhimalayatech.net --email ukiras@gmail.com --agree-tos
     networks:
       - app_network
 
