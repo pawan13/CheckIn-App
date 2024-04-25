@@ -13,7 +13,7 @@ services:
     build:
       context: ./Admin/FE
       args:
-        - VITE_API_URL=http://client-checkin.beyondhimalayatech.com/api
+        - VITE_API_URL=http://client-checkin.beyondhimalayatech.com/api/api/v1
     ports:
       - "4000:4000"
     expose:
@@ -38,7 +38,7 @@ services:
     build:
       context: ./Client/FE
       args:
-        - VITE_API_URL=http://admin-checkin.beyondhimalayatech.com/api
+        - VITE_API_URL=http://admin-checkin.beyondhimalayatech.com/api/api/v1
     ports:
       - "4001:4001"
     expose:
