@@ -69,8 +69,18 @@ services:
       - client-api
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certbot/config:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
     networks:
       - app_network
+  
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/config:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    command: certonly --webroot -w /var/www/certbot --force-renewal -d client-checkin.beyondhimalayatech.com --email ukiras@gmail.com -d client-checkin.beyondhimalayatech.com -d admin-checkin.beyondhimalayatech.com --agree-tos
 
 volumes:
   app_data:
