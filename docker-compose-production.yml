@@ -45,6 +45,7 @@ services:
       - app_network
     env_file: ./Client/BE/config/production.env
   nginx:
+    container_name: nginx
     image: nginx:latest
     ports:
       - "80:80"
