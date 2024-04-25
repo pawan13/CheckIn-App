@@ -20,6 +20,9 @@ build-production:
 run-production:
 	docker-compose -f docker-compose-production.yml up -d
 
+down-production:
+	docker-compose -f docker-compose-production.yml down
+
 ### SSH For Digital Ocean
 SSH_STRING:=root@170.64.224.105
 
