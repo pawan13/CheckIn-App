@@ -11,13 +11,13 @@ run-dev:
 
 ### Production
 build:
-	docker-compose -f docker-compose-production.yml build
+	docker-compose build
 
 run:
-	docker-compose -f docker-compose-production.yml up -d
+	docker-compose up -d
 
 down:
-	docker-compose -f docker-compose-production.yml down
+	docker-compose down
 
 
 

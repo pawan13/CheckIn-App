@@ -1,7 +1,7 @@
 import axios from "axios";
 import { setAdmin } from "../Pages/signup-signin/AdminSlice";
 
-const Base_URL = "http://admin-api:3000/api/v1";
+const Base_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api/v1";
 
 const axiosProcessor = async ({
   method,

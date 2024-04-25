@@ -18,6 +18,8 @@ services:
       - "4000"
     networks:
       - app_network
+    environment:
+      - VITE_API_URL=https://client-checkin.beyondhimalayatech.com/api
   admin-api:
     container_name: admin-api
     build:
@@ -41,6 +43,8 @@ services:
       - "4001"
     networks:
       - app_network
+    environment:
+      - VITE_API_URL=https://admin-checkin.beyondhimalayatech.com/api
   client-api:
     container_name: client-api
     build:
